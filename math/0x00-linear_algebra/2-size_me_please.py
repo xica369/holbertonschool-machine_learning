@@ -6,10 +6,11 @@
 def matrix_shape(matrix):
     """function that calculates the shape of a matrix"""
     shape = []
-    for row in matrix:
-        shape.append(len(matrix))
-        shape.append(len(row))
-        if isinstance(row[0], list):
-            shape.append(len(row[0]))
-        break
+    while(matrix):
+        if isinstance(matrix, list):
+            shape.append(len(matrix))
+        if isinstance(matrix[0], list):
+            matrix = matrix[0]
+        else:
+            matrix = None
     return shape
