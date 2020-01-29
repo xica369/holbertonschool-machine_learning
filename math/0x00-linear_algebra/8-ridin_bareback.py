@@ -17,3 +17,5 @@ def mat_mul(mat1, mat2):
                     temp_list.append(add)
             new_matrix.append(temp_list)
         return new_matrix
+    else:
+        return None
