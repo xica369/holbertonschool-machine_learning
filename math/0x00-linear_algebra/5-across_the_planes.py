@@ -9,16 +9,12 @@ def add_matrices2D(mat1, mat2):
     shape_mat2 = matrix_shape(mat2)
     if shape_mat1 == shape_mat2:
         new_matrix = []
-        for row in mat1:
-            row_len = len(row)
-            break
         for iter in range(len(mat1)):
-            for iter2 in range(row_len):
-                if isinstance(mat1[iter][iter2], list):
-                    add = add_arrays(mat1[iter][iter2], mat2[iter][iter2])
-                    new_matrix.append(add)
-                else:
-                    new_matrix.append(mat1[iter][iter2] + mat2[iter][iter2])
+            temp_list = []
+            for iter2 in range(len(mat1[0])):
+                add = mat1[iter][iter2] + mat2[iter][iter2]
+                temp_list.append(add)
+            new_matrix.append(temp_list)
         return new_matrix
     else:
         return None
@@ -35,14 +31,3 @@ def matrix_shape(matrix):
         else:
             matrix = None
     return shape
-
-
-def add_arrays(arr1, arr2):
-    """adds two arrays element-wise"""
-    if len(arr1) == len(arr2):
-        add = []
-        for iter in range(len(arr1)):
-            add.append(arr1[iter] + arr2[iter])
-        return add
-    else:
-        return None
