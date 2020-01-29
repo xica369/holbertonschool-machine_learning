@@ -5,9 +5,8 @@
 
 def add_matrices2D(mat1, mat2):
     """function that adds two matrices element-wise"""
-    shape_mat1 = matrix_shape(mat1)
-    shape_mat2 = matrix_shape(mat2)
-    if shape_mat1 == shape_mat2:
+
+    if len(mat1) == len(mat2) and len(mat1[0]) == len(mat2[0]):
         new_matrix = []
         for iter in range(len(mat1)):
             temp_list = []
@@ -18,16 +17,3 @@ def add_matrices2D(mat1, mat2):
         return new_matrix
     else:
         return None
-
-
-def matrix_shape(matrix):
-    """function that calculates the shape of a matrix"""
-    shape = []
-    while(matrix):
-        if isinstance(matrix, list):
-            shape.append(len(matrix))
-        if isinstance(matrix[0], list):
-                matrix = matrix[0]
-        else:
-            matrix = None
-    return shape
