@@ -5,7 +5,7 @@
 
 def cat_matrices2D(mat1, mat2, axis=0):
     """concatenates two matrices along a specific axis"""
-    if axis == 0:
+    if axis == 0 and len(mat1[0]) == len(mat2[0]):
         return mat1 + mat2
     new_mat = []
     if len(mat1) == len(mat2) and axis == 1:
