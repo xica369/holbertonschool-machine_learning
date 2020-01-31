@@ -26,6 +26,7 @@ np.random.seed(5)
 student_grades = np.random.normal(68, 15, 50)
 
 fig = plt.figure()
+fig.subplots_adjust(hspace=1, wspace=0.4)
 fig.suptitle('All in one')
 
 fig.add_subplot(321)
@@ -54,11 +55,13 @@ plt.xlabel('Time (years)', fontsize="x-small")
 plt.xlim(0, 20000)
 plt.ylim(0, 1)
 plt.legend()
+plt.legend(fontsize='x-small')
 
 fig.add_subplot(313)
 bins = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 plt.hist(student_grades, edgecolor='black', bins=bins)
 plt.ylim(0, 30)
+plt.xlim(0, 100)
 plt.xlabel('Grades', fontsize="x-small")
 plt.ylabel('Number of Students', fontsize="x-small")
 plt.title('Project A', fontsize="x-small")
