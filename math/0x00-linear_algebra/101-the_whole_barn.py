@@ -8,7 +8,7 @@ def add_matrices(mat1, mat2):
     shape1 = []
     while(mat1):
         if isinstance(mat1, list):
-            shape.append(len(mat1))
+            shape1.append(len(mat1))
         if isinstance(mat1[0], list):
             mat1 = mat1[0]
         else:
@@ -17,7 +17,7 @@ def add_matrices(mat1, mat2):
     shape2 = []
     while(mat2):
         if isinstance(mat2, list):
-            shape.append(len(mat2))
+            shape2.append(len(mat2))
         if isinstance(mat2[0], list):
             mat2 = mat2[0]
         else:
@@ -25,3 +25,6 @@ def add_matrices(mat1, mat2):
 
     if shape1 != shape2:
         return None
+
+    else:
+        return [x + y for x, y in zip(mat1, mat2)]
