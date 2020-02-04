@@ -6,7 +6,6 @@
 def poly_integral(poly, C=0):
     """function that calculates the integral of a polynomial"""
     if not isinstance(poly, list):
-        print('entro')
         return None
 
     if len(poly) == 0:
