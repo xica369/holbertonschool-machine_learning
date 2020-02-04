@@ -16,7 +16,7 @@ def poly_integral(poly, C=0):
         return None
 
     integral = [C]
-    if poly[0] == 0 or poly[len(poly) - 1] == 0:
+    if poly[0] == 0:
         return integral
 
     for num in range(len(poly)):
