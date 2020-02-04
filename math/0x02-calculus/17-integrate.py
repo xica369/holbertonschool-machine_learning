@@ -9,6 +9,9 @@ def poly_integral(poly, C=0):
         print('entro')
         return None
 
+    if len(poly) == 0:
+        return None
+
     if not isinstance(C, int) and not isinstance(C, float):
         print('HOla')
         return None
