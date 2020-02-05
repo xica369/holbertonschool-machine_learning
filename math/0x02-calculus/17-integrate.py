@@ -27,4 +27,12 @@ def poly_integral(poly, C=0):
             integral.append(integ)
         else:
             return None
+
+    for iter in range(len(integral)):
+        index = len(integral) - iter - 1
+        if integral[index] == 0:
+            integral.pop(index)
+        else:
+            break
+
     return integral
