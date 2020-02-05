@@ -11,7 +11,7 @@ def poly_integral(poly, C=0):
     if len(poly) == 0:
         return None
 
-    if not isinstance(C, int) and not isinstance(C, float):
+    if not isinstance(C, (int, float)):
         return None
 
     integral = [C]
