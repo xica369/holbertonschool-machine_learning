@@ -15,8 +15,8 @@ def poly_integral(poly, C=0):
         return None
 
     integral = [C]
-    #if poly[0] == 0 and len(poly) == 1:
-    #    return integral
+    if poly[0] == 0 and len(poly) == 1:
+        return integral
 
     for num in range(len(poly)):
         if isinstance(poly[num], int) or isinstance(poly[num], float):
