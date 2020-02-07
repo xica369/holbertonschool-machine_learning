@@ -47,4 +47,42 @@ class Binomial:
         if not isinstance(k, int):
             k = int(k)
 
-        return 0
+        if k < 0 and k > self.n:
+            return 0
+
+        p = self.p
+        q = 1 - p
+        n_fact = 1
+        k_fact = 1
+        n_k_fact = 1
+
+        for i in range(self.n + 1):
+            if i != 0:
+                n_fact = n_fact * i
+
+        for i in range(k + 1):
+            if i != 0:
+                k_fact = k_fact * i
+
+        for i in range(self.n - k + 1):
+            if i != 0:
+                n_k_fact = n_k_fact * i
+
+        n_k_comb = n_fact / (k_fact * n_k_fact)
+
+        pmf = n_k_comb * (p ** k) * (q ** (self.n - k))
+
+        return pmf
+                
+    def cdf(self, k):
+        """Calculates the value of the CDF for a given number of “successes”
+        k is the number of “successes”
+        If k is not an integer, convert it to an integer
+        If k is out of range, return 0
+        Returns the CDF value for k"""
+
+        if not isinstance(k, int):
+            k = int(k)
+
+        if k < 0 and k > self.n:
+            return 0
