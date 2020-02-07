@@ -39,6 +39,6 @@ class Exponential:
         e = 2.7182818285
         lambtha = self.lambtha
 
-        pdf = lambtha * (e ** (-lambtha * x))
+        pdf = lambtha * (e ** (-1 * lambtha * x))
 
         return pdf
