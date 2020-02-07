@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""class poisson"""
+
+
 class Poisson:
     def __init__(self, data=None, lambtha=1.):
         """Initialize Poisson"""
@@ -14,8 +17,8 @@ class Poisson:
         if isinstance(data, list) and len(data) < 2:
             raise ValueError("data must contain multiple values")
 
-        else:
-            lambth = float(sum(data)/len(data))
+        if data is not None:
+            self.lambtha = sum(data) / len(data)
 
         if lambtha < 1:
             raise ValueError("lambtha must be a positive value")
