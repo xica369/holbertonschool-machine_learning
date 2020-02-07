@@ -29,8 +29,9 @@ class Binomial:
         if data is not None:
             pi = 3.1415926536
             N = len(data)
+
             mean = sum(data) / N
-            self.p = mean / 50
+            self.p = mean / N
 
             self.n = int(mean / self.p)
 
