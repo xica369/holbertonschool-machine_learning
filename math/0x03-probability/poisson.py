@@ -43,3 +43,26 @@ class Poisson:
         pmf = (num / fact) * (e ** -self.lambtha)
 
         return pmf
+
+    def cdf(self, k):
+        """Calculates the value of the CDF for a given number of “successes”
+        k is the number of “successes”"""
+        if not isinstance(k, int):
+            k = int(k)
+
+        if k < 1:
+            return 0
+
+        e = 2.7182818285
+        sum = 0
+        fact_i = 1
+        for i in range(k + 1):
+            if i != 0:
+                fact_i = fact_i * i
+
+            lambtha_i = self.lambtha ** i
+            sum = sum + (lambtha_i / fact_i)
+
+        cdf = (e ** -self.lambtha) * sum
+
+        return cdf
