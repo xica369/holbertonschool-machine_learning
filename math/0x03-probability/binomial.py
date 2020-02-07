@@ -29,14 +29,15 @@ class Binomial:
         if data is not None:
             pi = 3.1415926536
             N = len(data)
+            mean = sum(data) / N
+            self.p = mean / 50
 
-            fact_N = 1
-            fact_x = 1
+            self.n = int(mean / self.p)
 
-            for i in range(len(data)):
-                if i != 0:
-                    fact_N = fact_N * i
-
+            self.p = mean / self.n
+            print(data)
+            print("media {}, n {}, p {}".format(mean, N, p))
+            
     def pmf(self, k):
         """Calculates the value of the PMF for a given number of “successes”
         k is the number of “successes”
