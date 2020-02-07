@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""class poisson"""
+"""poisson distribution"""
 
 
 class Poisson:
+    """class Poisson"""
     def __init__(self, data=None, lambtha=1.):
         """Initialize Poisson"""
 
