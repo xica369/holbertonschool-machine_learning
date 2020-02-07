@@ -57,3 +57,20 @@ class Normal:
         x = (z * stddev) + mean
 
         return x
+
+    def pdf(self, x):
+        """Calculates the value of the PDF for a given x-value
+        x is the x-value
+        Returns the PDF value for x"""
+
+        mean = self.mean
+        stddev = self.stddev
+        e = 2.7182818285
+        pi = 3.1415926536
+
+        exp = -1 * ((x - mean) ** 2) / (2 * (stddev ** 2))
+        den = 2 * pi * (stddev ** 2)
+
+        pdf = (1 / (den) ** 0.5) * (e ** exp)
+
+        return pdf
