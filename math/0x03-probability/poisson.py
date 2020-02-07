@@ -23,3 +23,23 @@ class Poisson:
 
         if lambtha < 1:
             raise ValueError("lambtha must be a positive value")
+
+    def pmf(self, k):
+        """Calculates the value of the PMF for a given number of “successes”
+        k is the number of “successes”"""
+        if not isinstance(k, int):
+            k = int(k)
+
+        if k < 1:
+            return 0
+
+        num = (self.lambtha) ** k
+        e = 2.7182818285
+        fact = 1
+
+        for n in range(1, k + 1):
+            fact = fact * n
+
+        pmf = (num / fact) * (e ** -self.lambtha)
+
+        return pmf
