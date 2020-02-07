@@ -35,9 +35,7 @@ class Binomial:
             self.n = int(mean / self.p)
 
             self.p = mean / self.n
-            print(data)
-            print("media {}, n {}, p {}".format(mean, N, p))
-            
+
     def pmf(self, k):
         """Calculates the value of the PMF for a given number of “successes”
         k is the number of “successes”
@@ -74,7 +72,7 @@ class Binomial:
         pmf = n_k_comb * (p ** k) * (q ** (self.n - k))
 
         return pmf
-                
+
     def cdf(self, k):
         """Calculates the value of the CDF for a given number of “successes”
         k is the number of “successes”
