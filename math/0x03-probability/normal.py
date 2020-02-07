@@ -33,3 +33,27 @@ class Normal:
             temp = sumat / len(data)
 
             self.stddev = temp ** 0.5
+
+    def z_score(self, x):
+        """Calculates the z-score of a given x-value
+        x is the x-value
+        Returns the z-score of x"""
+
+        mean = self.mean
+        stddev = self.stddev
+
+        z = (x - mean) / stddev
+
+        return z
+
+    def x_value(self, z):
+        """Calculates the x-value of a given z-score
+        z is the z-score
+        Returns the x-value of z"""
+
+        mean = self.mean
+        stddev = self.stddev
+
+        x = (z * stddev) + mean
+
+        return x
