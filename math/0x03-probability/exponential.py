@@ -26,3 +26,19 @@ class Exponential:
 
         if lambtha < 1:
             raise ValueError("lambtha must be a positive value")
+
+    def pdf(self, x):
+        """Calculates the value of the PDF for a given time period
+        x is the time period
+        Returns the PDF value for x
+        If x is out of range, return 0"""
+
+        if x < 0:
+            return 0
+
+        e = 2.7182818285
+        lambtha = self.lambtha
+
+        pdf = lambtha * (e ** (-lambtha * x))
+
+        return pdf
