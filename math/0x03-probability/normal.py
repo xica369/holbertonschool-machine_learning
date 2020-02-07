@@ -74,3 +74,11 @@ class Normal:
         pdf = (1 / (den) ** 0.5) * (e ** exp)
 
         return pdf
+
+    def cdf(self, x):
+        """Calculates the value of the CDF for a given x-value
+        x is the x-value
+        Returns the CDF value for x"""
+
+        mean = self.mean
+        stddev = self.stddev
