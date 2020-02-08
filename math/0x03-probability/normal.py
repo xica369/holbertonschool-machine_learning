@@ -83,8 +83,11 @@ class Normal:
         pi = 3.1415926536
         mean = self.mean
         stddev = self.stddev
-        erf = (2/pi**0.5)*(x-((x**3)/3)+((x**5)/10)-((x**7)/42)+((x**9)/216))
 
-        cdf = (1/2)*(1+erf*((x-mean)/(stddev*(2**0.5))))
+        x1 = (x - mean) / (stddev * (2 ** 0.5)) 
+        
+        erf = (2/pi**0.5)*(x1-((x1**3)/3)+((x1**5)/10)-((x1**7)/42)+((x1**9)/216))
+
+        cdf = (1/2)*(1+erf)
 
         return cdf
