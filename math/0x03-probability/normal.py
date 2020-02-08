@@ -84,10 +84,11 @@ class Normal:
         mean = self.mean
         stddev = self.stddev
 
-        x1 = (x - mean) / (stddev * (2 ** 0.5)) 
-        
-        erf = (2/pi**0.5)*(x1-((x1**3)/3)+((x1**5)/10)-((x1**7)/42)+((x1**9)/216))
+        x1 = (x - mean) / (stddev * (2 ** 0.5))
 
+        erf1 = (2/pi**0.5)
+        erf2 = (x1-((x1**3)/3)+((x1**5)/10)-((x1**7)/42)+((x1**9)/216))
+        erf = erf1 * erf2
         cdf = (1/2)*(1+erf)
 
         return cdf
