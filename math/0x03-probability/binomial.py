@@ -31,6 +31,16 @@ class Binomial:
             N = len(data)
 
             mean = sum(data) / N
+
+            num = 0
+
+            for x in data:
+                num = num + (x - mean) ** 2
+
+            stddev = (num / N) ** 0.5
+
+            
+            
             self.p = mean / N
 
             self.n = int(mean / self.p)
