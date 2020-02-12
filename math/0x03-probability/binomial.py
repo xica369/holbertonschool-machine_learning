@@ -55,7 +55,7 @@ class Binomial:
         if not isinstance(k, int):
             k = int(k)
 
-        if k < 0 and k > self.n:
+        if k < 0 or k > self.n:
             return 0
 
         p = self.p
@@ -92,7 +92,7 @@ class Binomial:
         if not isinstance(k, int):
             k = int(k)
 
-        if k < 0 and k > self.n:
+        if k < 0 or k > self.n:
             return 0
 
         cdf = 0
