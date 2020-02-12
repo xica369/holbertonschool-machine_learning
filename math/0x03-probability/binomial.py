@@ -37,11 +37,9 @@ class Binomial:
             for x in data:
                 num = num + (x - mean) ** 2
 
-            stddev = (num / N) ** 0.5
+            stddev = num / N
 
-            
-            
-            self.p = mean / N
+            self.p = 1 - (stddev / mean)
 
             self.n = int(mean / self.p)
 
@@ -66,15 +64,15 @@ class Binomial:
         k_fact = 1
         n_k_fact = 1
 
-        for i in range(self.n + 1):
+        for i in range(1, self.n + 1):
             if i != 0:
                 n_fact = n_fact * i
 
-        for i in range(k + 1):
+        for i in range(1, k + 1):
             if i != 0:
                 k_fact = k_fact * i
 
-        for i in range(self.n - k + 1):
+        for i in range(1, self.n - k + 1):
             if i != 0:
                 n_k_fact = n_k_fact * i
 
@@ -96,3 +94,9 @@ class Binomial:
 
         if k < 0 and k > self.n:
             return 0
+
+        cdf = 0
+        for num in range(k + 1):
+            cdf = cdf + self.pmf(num)
+
+        return cdf
