@@ -64,15 +64,15 @@ class Binomial:
         k_fact = 1
         n_k_fact = 1
 
-        for i in range(1, self.n + 1):
+        for i in range(self.n + 1):
             if i != 0:
                 n_fact = n_fact * i
 
-        for i in range(1, k + 1):
+        for i in range(k + 1):
             if i != 0:
                 k_fact = k_fact * i
 
-        for i in range(1, self.n - k + 1):
+        for i in range(self.n - k + 1):
             if i != 0:
                 n_k_fact = n_k_fact * i
 
@@ -92,7 +92,7 @@ class Binomial:
         if not isinstance(k, int):
             k = int(k)
 
-        if k < 0:
+        if k < 0 or k > self.n:
             return 0
 
         cdf = 0
