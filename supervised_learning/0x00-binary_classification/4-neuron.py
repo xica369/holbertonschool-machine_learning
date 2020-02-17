@@ -91,7 +91,7 @@ class Neuron:
 
         A = self.forward_prop(X)
 
-        predict = np.where(A < 0.5, 0, 1)
+        evaluate_predict = np.where(A < 0.5, 0, 1)
         cost = self.cost(Y, A)
 
-        return (predict, cost)
+        return (evaluate_predict, cost)
