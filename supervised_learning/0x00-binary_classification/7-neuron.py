@@ -170,7 +170,7 @@ class Neuron:
             A = self.forward_prop(X)
             self.gradient_descent(X, Y, A, alpha)
 
-            if cont != 0 and cont % step == 0:
+            if cont % step == 0:
                 cost = self.cost(Y, A)
 
                 if verbose:
