@@ -7,6 +7,7 @@ import numpy as np
 
 class DeepNeuralNetwork:
     """"class DeepNeuralNetwork"""
+
     def __init__(self, nx, layers):
         """nx is the number of input features.
         layers is a list representing the number of nodes in
@@ -40,8 +41,8 @@ class DeepNeuralNetwork:
                 w = np.random.randn(layers[l], nx) * np.sqrt(2 / nx)
 
             else:
-                w = np.random.randn(layers[l], layers[l - 1])
-                w = w * np.sqrt(2 / layers[l - 1])
+                w = np.random.randn(layers[l], layers[l-1])
+                w = w * np.sqrt(2 / layers[l-1])
 
-            self.weights['b' + str(l + 1)] = np.zeros((layers[l], 1))
-            self.weights['W' + str(l + 1)] = w
+            self.weights["b"+str(l+1)] = np.zeros((layers[l], 1))
+            self.weights["W"+str(l+1)] = w
