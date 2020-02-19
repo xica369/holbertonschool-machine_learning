@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-
-"""defines a deep neural network performing binary classification"""
+"""defines a deep neural network
+performing binary classification"""
 
 import numpy as np
 
 
 class DeepNeuralNetwork:
     """"class DeepNeuralNetwork"""
-
     def __init__(self, nx, layers):
         """nx is the number of input features.
         layers is a list representing the number of nodes in
@@ -32,8 +31,6 @@ class DeepNeuralNetwork:
         self.L = len(layers)
         self.cache = {}
         self.weights = {}
-        self.nx = nx
-        self.layers = layers
 
         for l in range(len(layers)):
             if not isinstance(layers[l], int) or layers[l] <= 0:
