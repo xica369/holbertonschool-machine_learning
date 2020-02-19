@@ -32,6 +32,8 @@ class DeepNeuralNetwork:
         self.L = len(layers)
         self.cache = {}
         self.weights = {}
+        self.nx = nx
+        self.layers = layers
 
         for l in range(len(layers)):
             if not isinstance(layers[l], int) or layers[l] <= 0:
