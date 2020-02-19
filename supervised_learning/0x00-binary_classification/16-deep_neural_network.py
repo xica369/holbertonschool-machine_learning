@@ -17,8 +17,7 @@ class DeepNeuralNetwork:
         Sets the public instance attributes:
         L: The number of layers in the neural network.
         cache: A dictionary to hold all intermediary values of the network
-        weights: A dictionary to hold all weights and biased of the network.
-        """
+        weights: A dictionary to hold all weights and biased of the network."""
 
         if not isinstance(nx, int):
             raise TypeError('nx must be an integer')
