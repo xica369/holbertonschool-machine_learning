@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""defines a deep neural network
-performing binary classification"""
+"""defines a deep neural network performing binary classification"""
 
 import numpy as np
 
@@ -10,8 +9,8 @@ class DeepNeuralNetwork:
 
     def __init__(self, nx, layers):
         """nx is the number of input features.
-        layers is a list representing the number of nodes in
-        each layer of the network.
+        layers is a list representing the number of nodes in each layer
+        of the network.
         The first value in layers represents the number of nodes
         in the first layer.
         Sets the private instance attributes:
@@ -132,16 +131,37 @@ class DeepNeuralNetwork:
         alpha is the learning rate
         Updates the private attribute __weights"""
 
-        return ()
+        m = Y.shape[1]
+        cp_w = self.__weights.copy()
+        la = self.__L
+        dz = self.__cache['A' + str(la)] - Y
+        dw = np.dot(self.__cache['A'+str(la-1)], dz.T) / m
+        db = np.sum(dz, axis=1, keepdims=True)/m
+
+        self.__weights['W'+str(la)] = cp_w['W'+str(la)] - alpha*dw.T
+        self.__weights['b'+str(la)] = cp_w['b'+str(la)] - alpha*db
+
+        for la in range(self.__L - 1, 0, -1):
+            g = self.__cache['A'+str(la)] * (1 - self.__cache['A'+str(la)])
+            dz = np.dot(cp_w['W'+str(la+1)].T, dz)*g
+            dw = np.dot(self.__cache['A'+str(la-1)], dz.T)/m
+            db = np.sum(dz, axis=1, keepdims=True)/m
+
+            self.__weights['W'+str(la)] = cp_w['W'+str(la)] - alpha*dw.T
+            self.__weights['b'+str(la)] = cp_w['b'+str(la)] - alpha*db
 
     def train(self, X, Y, iterations=5000, alpha=0.05):
-        """Calculates one pass of gradient descent on the neural network
+        """Trains the deep neural network
+        X is a numpy.ndarray with shape (nx, m) that contains the input data
+        nx is the number of input features to the neuron
+        m is the number of examples
         Y is a numpy.ndarray with shape (1, m)
         that contains the correct labels for the input data
-        cache is a dictionary containing all the intermediary values
-        of the network
+        iterations is the number of iterations to train over
         alpha is the learning rate
-        Updates the private attribute __weights"""
+        Updates the private attributes __weights and __cache
+        Returns the evaluation of the training data after
+        iterations of training have occurred"""
 
         if type(iterations) is not int:
             raise TypeError("iterations must be an integer")
@@ -154,3 +174,12 @@ class DeepNeuralNetwork:
 
         if alpha < 0:
             raise ValueError("alpha must be positive")
+
+        for layer in range(iterations):
+            self.forward_prop(X)
+            cache = self.__cache
+            self.gradient_descent(Y, cache, alpha)
+
+        evaluate = self.evaluate(X, Y)
+
+        return evaluate
