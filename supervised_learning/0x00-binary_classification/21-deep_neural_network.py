@@ -133,22 +133,22 @@ class DeepNeuralNetwork:
 
         m = Y.shape[1]
         cp_w = self.__weights.copy()
-        l = self.__L
+        la = self.__L
 
         print(self.__cache)
 
-        dz = self.__cache['A' + str(l)] - Y
-        dw = np.dot(self.__cache['A' + str(l - 1)], dz.transpose())
+        dz = self.__cache['A' + str(la)] - Y
+        dw = np.dot(dz, self.__cache['A' + str(la - 1)].transpose())
         db = np.sum(dz, axis=1, keepdims=True)
 
-        self.__weights['W'+str(l)] = cp_w['W'+str(l)]-(alpha*dw.T)*(1/m)
-        self.__weights['b'+str(l)] = cp_w['b'+str(l)]-(alpha*db)*(1/m)
+        self.__weights['W'+str(la)] = cp_w['W'+str(la)]-(alpha*dw)*(1/m)
+        self.__weights['b'+str(la)] = cp_w['b'+str(la)]-(alpha*db)*(1/m)
 
-        for l in range(self.__L - 1, 0, -1):
-            g = self.__cache['A'+str(l)]*(1-self.__cache['A'+str(l)])
-            dz = np.dot(cp_w['W'+str(l+1)].T, dz) * g
-            dw = np.dot(self.__cache['A'+str(l-1)], dz.transpose())
+        for la in range(self.__L - 1, 0, -1):
+            g = self.__cache['A'+str(la)]*(1-self.__cache['A'+str(la)])
+            dz = np.dot(cp_w['W'+str(la+1)].T, dz) * g
+            dw = np.dot(dz, self.__cache['A'+str(la-1)].transpose())
             db = np.sum(dz, axis=1, keepdims=True)
 
-            self.__weights['W'+str(l)] = cp_w['W'+str(l)]-(alpha*dw.T)*(1/m)
-            self.__weights['b'+str(l)] = cp_w['b'+str(l)]-(alpha*db)*(1/m)
+            self.__weights['W'+str(la)] = cp_w['W'+str(la)]-(alpha*dw)*(1/m)
+            self.__weights['b'+str(la)] = cp_w['b'+str(la)]-(alpha*db)*(1/m)
