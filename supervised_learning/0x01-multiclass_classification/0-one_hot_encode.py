@@ -19,10 +19,10 @@ def one_hot_encode(Y, classes):
     if Y is None or len(Y) == 0:
         return None
 
-    if not isinstance(classes, int) or classes < 1:
+    if not isinstance(classes, int):
         return None
 
-    if classes <= Y.max():
+    if classes != Y.max() + 1:
         return None
 
     m = Y.shape[0]
