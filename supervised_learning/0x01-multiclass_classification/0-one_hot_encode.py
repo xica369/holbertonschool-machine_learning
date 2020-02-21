@@ -22,6 +22,9 @@ def one_hot_encode(Y, classes):
     if not isinstance(classes, int) or classes < 1:
         return None
 
+    if classes != Y.max() + 1:
+        return None
+
     m = Y.shape[0]
     one_hot = np.zeros((m, classes))
     colum = np.arange(m)
