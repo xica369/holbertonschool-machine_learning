@@ -4,6 +4,7 @@
 with one hidden layer performing binary classification"""
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 class NeuralNetwork:
@@ -217,7 +218,7 @@ class NeuralNetwork:
                     print('Cost after {} iterations: {}'.format(cont, cost))
 
                 if graph:
-                    cost.append(cost)
+                    costs.append(cost)
                     steps.append(cont)
 
         if graph:
