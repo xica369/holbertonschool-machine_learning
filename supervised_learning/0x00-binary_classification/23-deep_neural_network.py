@@ -151,7 +151,8 @@ class DeepNeuralNetwork:
             self.__weights['W'+str(la)] = cp_w['W'+str(la)] - alpha*dw.T
             self.__weights['b'+str(la)] = cp_w['b'+str(la)] - alpha*db
 
-    def train(self, X, Y, iterations=5000, alpha=0.05):
+    def train(self, X, Y, iterations=5000, alpha=0.05,
+              verbose=True, graph=True, step=100):
         """Trains the deep neural network
         X is a numpy.ndarray with shape (nx, m) that contains the input data
         nx is the number of input features to the neuron
