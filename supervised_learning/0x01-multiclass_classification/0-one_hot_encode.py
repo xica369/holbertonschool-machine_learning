@@ -22,7 +22,7 @@ def one_hot_encode(Y, classes):
     if not isinstance(classes, int):
         return None
 
-    if classes != Y.max() + 1:
+    if classes <= Y.max():
         return None
 
     m = Y.shape[0]
