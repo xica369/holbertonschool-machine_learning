@@ -138,17 +138,17 @@ class DeepNeuralNetwork:
         print(self.__cache)
 
         dz = self.__cache['A' + str(la)] - Y
-        dw = np.dot(dz, self.__cache['A' + str(la - 1)].transpose())
+        dw = np.dot(self.__cache['A' + str(la - 1)], dz.transpose())
         db = np.sum(dz, axis=1, keepdims=True)
 
-        self.__weights['W'+str(la)] = cp_w['W'+str(la)]-(alpha*dw)*(1/m)
+        self.__weights['W'+str(la)] = cp_w['W'+str(la)]-(alpha*dw.T)*(1/m)
         self.__weights['b'+str(la)] = cp_w['b'+str(la)]-(alpha*db)*(1/m)
 
         for la in range(self.__L - 1, 0, -1):
             g = self.__cache['A'+str(la)]*(1-self.__cache['A'+str(la)])
             dz = np.dot(cp_w['W'+str(la+1)].T, dz) * g
-            dw = np.dot(dz, self.__cache['A'+str(la-1)].transpose())
+            dw = np.dot(self.__cache['A'+str(la-1)], dz.transpose())
             db = np.sum(dz, axis=1, keepdims=True)
 
-            self.__weights['W'+str(la)] = cp_w['W'+str(la)]-(alpha*dw)*(1/m)
+            self.__weights['W'+str(la)] = cp_w['W'+str(la)]-(alpha*dw.T)*(1/m)
             self.__weights['b'+str(la)] = cp_w['b'+str(la)]-(alpha*db)*(1/m)
