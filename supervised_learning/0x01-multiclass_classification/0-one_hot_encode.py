@@ -13,10 +13,10 @@ def one_hot_encode(Y, classes):
     Returns: a one-hot encoding of Y with shape (classes, m),
     or None on failure"""
 
-    if not isinstance(Y, np.ndarray):
+    if not isinstance(Y, np.ndarray) or Y is None:
         return None
 
-    if len(Y) == 0:
+    if len(Y) == 0 or classes < 0:
         return None
 
     if not isinstance(classes, int):
@@ -26,7 +26,7 @@ def one_hot_encode(Y, classes):
         return None
 
     m = Y.shape[0]
-    one_hot = np.zeros((m, classes))
+    one_hot = np.zeros((classes, m))
     colum = np.arange(m)
     one_hot[Y, colum] = 1
 
