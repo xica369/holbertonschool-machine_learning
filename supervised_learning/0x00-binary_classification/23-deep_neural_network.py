@@ -198,7 +198,7 @@ class DeepNeuralNetwork:
             self.gradient_descent(Y, cache, alpha)
 
             if cont == iterations or cont % step == 0:
-                cost = self.cost(Y, self.__cache[A+self.__L])
+                cost = self.cost(Y, self.__cache['A'+str(self.__L)])
 
                 if verbose:
                     print('Cost after {} iterations: {}'.format(cont, cost))
