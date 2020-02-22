@@ -225,7 +225,7 @@ class DeepNeuralNetwork:
         If filename does not have the extension .pkl, add it"""
 
         if filename[-4] != '.pkl':
-            filename = "{}.pkl".format(filename)
+            filename = filename + ".pkl"
 
         file_binary = open(filename, 'wb')
         pickle.dump(self, file_binary)
