@@ -231,7 +231,6 @@ class DeepNeuralNetwork:
 
         with open(filename, 'wb') as file_binary:
             pickle.dump(self, file_binary)
-        file_binary.close()
 
     @staticmethod
     def load(filename):
@@ -245,7 +244,7 @@ class DeepNeuralNetwork:
         try:
             with open(filename, 'rb') as file:
                 load = pickle.load(file)
-            file.close()
+
         except (OSError, IOError) as e:
             return None
 
