@@ -13,8 +13,13 @@ def one_hot_decode(one_hot):
     Returns: a numpy.ndarray with shape (m,) containing the numeric
     labels for each example, or None on failure"""
 
-    if not isinstance(one_hot, numpy.ndarray):
+    if not isinstance(one_hot, np.ndarray):
         return None
 
     if len(one_hot) == 0:
         return None
+
+    Y = np.where(one_hot.T)
+    Y = np.array(Y[1])
+
+    return Y
