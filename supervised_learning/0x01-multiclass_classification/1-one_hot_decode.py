@@ -19,7 +19,7 @@ def one_hot_decode(one_hot):
     if len(one_hot) == 0:
         return None
 
-    if np.where(one_hot == 0):
+    if np.where(one_hot == 1).all():
         return None
 
     Y = np.where(one_hot.T)
