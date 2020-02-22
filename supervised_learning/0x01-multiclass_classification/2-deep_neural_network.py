@@ -242,7 +242,10 @@ class DeepNeuralNetwork:
         if not filename:
             return None
 
-        file = open(filename, 'rb')
-        load = pickle.load(file)
+        try:
+            file = open(filename, 'rb')
+            load = pickle.load(file)
+        except (OSError, IOError) as e:
+            return None
 
         return (load)
