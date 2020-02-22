@@ -226,9 +226,8 @@ class DeepNeuralNetwork:
 
         filename = "{}.pkl".format(filename.split()[0])
 
-        file_binary = open(filename, 'wb')
-        pickle.dump(self, file_binary)
-        file_binary.close()
+        with open(filename, 'wb') as file_binary:
+            pickle.dump(self, file_binary)
 
     @staticmethod
     def load(filename):
@@ -237,10 +236,9 @@ class DeepNeuralNetwork:
         Returns: the loaded object, or None if filename doesn’t exist"""
 
         try:
-            file = open(filename, 'rb')
-            load = pickle.load(file)
-            file.close()
-            return load
+            with open(filename, 'rb') as file:
+                load = pickle.load(file)
+                return load
 
         except FileNotFoundError:
             return None
