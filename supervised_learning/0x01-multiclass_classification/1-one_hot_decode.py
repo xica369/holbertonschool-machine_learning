@@ -19,6 +19,9 @@ def one_hot_decode(one_hot):
     if len(one_hot) == 0:
         return None
 
+    if np.where(one_hot == 0):
+        return None
+
     Y = np.where(one_hot.T)
     Y = np.array(Y[1])
 
