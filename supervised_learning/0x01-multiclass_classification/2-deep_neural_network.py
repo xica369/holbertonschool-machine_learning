@@ -224,7 +224,7 @@ class DeepNeuralNetwork:
         filename is the file to which the object should be saved
         If filename does not have the extension .pkl, add it"""
 
-        if ".pkl" not in filename:
+        if filename[-4] != '.pkl':
             filename = "{}.pkl".format(filename)
 
         file_binary = open(filename, 'wb')
