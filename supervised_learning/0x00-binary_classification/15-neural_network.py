@@ -105,12 +105,9 @@ class NeuralNetwork:
         To avoid division by zero errors, use 1.0000001 - A
         Returns the cost"""
 
-        y1 = 1 - Y
-        y2 = 1.0000001 - A
-
         m = Y.shape[1]
 
-        cost = -1 * (1 / m) * np.sum(Y * np.log(A) + y1 * np.log(y2))
+        cost = (-1/m) * np.sum(Y * np.log(A) + (1-Y) * np.log(.0000001-A))
 
         return cost
 
