@@ -208,7 +208,7 @@ class NeuralNetwork:
         cost = self.cost(Y, self.__A2)
         costs = [cost]
 
-        for cont in range(1, iterations):
+        for cont in range(iterations + 1):
             self.forward_prop(X)
             self.gradient_descent(X, Y, self.__A1, self.__A2, alpha)
 
