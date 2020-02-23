@@ -221,6 +221,8 @@ class NeuralNetwork:
                     costs.append(cost)
                     steps.append(cont)
 
+            self.gradient_descent(X, Y, self.__A1, self.__A2, alpha)
+
         if graph:
             plt.plot(steps, costs)
             plt.title('Training Cost')
