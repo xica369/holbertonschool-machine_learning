@@ -209,6 +209,7 @@ class NeuralNetwork:
 
         for cont in range(iterations + 1):
             self.forward_prop(X)
+            self.gradient_descent(X, Y, self.__A1, self.__A2, alpha)
 
             if cont == iterations or cont % step == 0:
                 cost = self.cost(Y, self.__A2)
@@ -219,8 +220,6 @@ class NeuralNetwork:
                 if graph:
                     costs.append(cost)
                     steps.append(cont)
-
-            self.gradient_descent(X, Y, self.__A1, self.__A2, alpha)
 
         if graph:
             plt.plot(steps, costs)
