@@ -174,13 +174,12 @@ class NeuralNetwork:
         iterations is the number of iterations to train over
         alpha is the learning rate
         Updates the private attributes __W1, __b1, __A1, __W2, __b2, and __A2
-        Returns the evaluation of the training data
         after iterations of training have occurred
         verbose is a boolean that defines whether or not to print information
         about the training. Include data from the 0th and last iteration
         graph is a boolean that defines whether or not to graph information
         about the training once the training has completed.
-        Include data from the 0th and last iteration
+        Include data from the 0th and last iteration.
         Returns the evaluation of the training data after iterations of
         training have occurred
         """
