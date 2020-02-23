@@ -204,9 +204,8 @@ class NeuralNetwork:
             if step < 1 or step > iterations:
                 raise ValueError('step must be positive and <= iterations')
 
-        steps = [0]
-        cost = self.cost(Y, self.__A2)
-        costs = [cost]
+        steps = []
+        costs = []
 
         for cont in range(iterations + 1):
             self.forward_prop(X)
