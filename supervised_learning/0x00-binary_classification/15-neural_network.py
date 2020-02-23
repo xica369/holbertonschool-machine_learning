@@ -150,17 +150,17 @@ class NeuralNetwork:
         m = X.shape[1]
 
         dz2 = A2 - Y
-        dw2 = np.dot(dz2, A1.transpose())
+        dw2 = np.dot(A1, dz2.transpose())
         db2 = np.sum(dz2, axis=1, keepdims=True)
 
         w2 = self.__W2
         dz1 = np.dot(w2.transpose(), dz2) * (A1 * (1 - A1))
-        dw1 = np.dot(dz1, X.transpose())
+        dw1 = np.dot(X, dz1.transpose())
         db1 = np.sum(dz1, axis=1, keepdims=True)
 
-        self.__W2 = self.__W2 - (alpha * dw2) * (1 / m)
+        self.__W2 = self.__W2 - (alpha * dw2.T) * (1 / m)
         self.__b2 = self.__b2 - (alpha * db2) * (1 / m)
-        self.__W1 = self.__W1 - (alpha * dw1) * (1 / m)
+        self.__W1 = self.__W1 - (alpha * dw1.T) * (1 / m)
         self.__b1 = self.__b1 - (alpha * db1) * (1 / m)
 
     def train(self, X, Y, iterations=5000, alpha=0.05,
