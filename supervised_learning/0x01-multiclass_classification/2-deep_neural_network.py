@@ -196,6 +196,10 @@ class DeepNeuralNetwork:
         for cont in range(iterations + 1):
             self.forward_prop(X)
 
+            if cont > 1 or cont < iterations:
+                cache = self.__cache
+                self.gradient_descent(Y, cache, alpha)
+
             if cont == iterations or cont % step == 0:
                 cost = self.cost(Y, self.__cache['A'+str(self.__L)])
 
@@ -205,10 +209,6 @@ class DeepNeuralNetwork:
                 if graph:
                     costs.append(cost)
                     steps.append(cont)
-
-            if cont < iterations:
-                cache = self.__cache
-                self.gradient_descent(Y, cache, alpha)
 
         if graph:
             plt.plot(steps, costs)
