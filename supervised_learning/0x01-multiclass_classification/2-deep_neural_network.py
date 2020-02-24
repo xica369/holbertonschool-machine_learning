@@ -210,10 +210,6 @@ class DeepNeuralNetwork:
                     costs.append(cost)
                     steps.append(cont)
 
-            if cont < iterations:
-                cache = self.__cache
-                self.gradient_descent(Y, cache, alpha)
-
         if graph:
             plt.plot(steps, costs)
             plt.title('Training Cost')
