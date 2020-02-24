@@ -196,7 +196,7 @@ class DeepNeuralNetwork:
         for cont in range(iterations + 1):
             self.forward_prop(X)
 
-            if cont > 0 and cont < iterations:
+            if cont != 0 and cont < iterations:
                 cache = self.__cache
                 self.gradient_descent(Y, cache, alpha)
 
