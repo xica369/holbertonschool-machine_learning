@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Loss"""
+"""Loss function"""
 
 import tensorflow as tf
 
