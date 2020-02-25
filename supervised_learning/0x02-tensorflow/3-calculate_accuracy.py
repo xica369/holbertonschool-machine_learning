@@ -11,7 +11,9 @@ def calculate_accuracy(y, y_pred):
     y_pred: tensor containing the network’s predictions
     Returns: tensor with the decimal accuracy of the prediction"""
 
-    equal = tf.equal(y_pred, y)
+    prediction = tf.argmax(y_pred, 1)
+    correct_answer = tf.argmax(y, 1)
+    equal = tf.equal(prediction, correct_answer)
     accuracy = tf.reduce_mean(tf.cast(equal, tf.float32))
 
     return accuracy
