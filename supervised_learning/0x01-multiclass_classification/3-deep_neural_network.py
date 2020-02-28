@@ -103,7 +103,7 @@ class DeepNeuralNetwork:
         Returns the cost"""
 
         m = Y.shape[1]
-        cost = -1 * (1 / m) * np.sum(Y * log(A))
+        cost = -1 * (1 / m) * np.sum(Y * np.log(A))
 
         return cost
 
@@ -118,7 +118,7 @@ class DeepNeuralNetwork:
         The label values should be 1 if the output of the network is >= 0.5
         and 0 otherwise"""
 
-        Y = one_hot_encode(Y.T, Y.max())
+        Y = one_hot_encode(Y.T, (Y.max() + 1))
 
         self.forward_prop(X)
         A = self.__cache['A' + str(self.__L)]
