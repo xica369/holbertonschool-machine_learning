@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+
+"""Momentum Upgraded"""
+
+import numpy as np
+import tensorflow as tf
+
+
+def create_momentum_op(loss, alpha, beta1):
+    """training operation for a neural network with the
+    gradient descent and momentum optimization algorithm:
+    loss is the loss of the network
+    alpha is the learning rate
+    beta1 is the momentum weight
+    Returns: the momentum optimization operation"""
