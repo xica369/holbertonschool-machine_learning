@@ -3,7 +3,6 @@
 """Normalize"""
 
 import numpy as np
-import tensorflow as tf
 
 
 def normalize(X, m, s):
@@ -17,6 +16,6 @@ def normalize(X, m, s):
     that contains the standard deviation of all features of X
     Returns: The normalized X matrix"""
 
-    X = (X - m) / s
+    normalize = (X - m) / s
 
-    return X
+    return normalize
