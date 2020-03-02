@@ -3,7 +3,6 @@
 """Normalization Constants"""
 
 import numpy as np
-import tensorflow as tf
 
 
 def normalization_constants(X):
@@ -12,3 +11,7 @@ def normalization_constants(X):
     m is the number of data points
     nx is the number of features
     Returns: the mean and standard deviation of each feature"""
+    mean = X.mean(0)
+    stdev = X.std(0)
+
+    return (mean, stdev)
