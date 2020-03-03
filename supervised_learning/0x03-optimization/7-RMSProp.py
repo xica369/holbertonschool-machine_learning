@@ -16,6 +16,6 @@ def update_variables_RMSProp(alpha, beta2, epsilon, var, grad, s):
 
     e = epsilon
     v = beta2 * s + (1 - beta2) * pow(grad, 2)
-    w = var - (grad * alpha / pow(v + e, 0.5))
+    w = var - (grad * alpha / (pow(v, 0.5) + e))
 
     return (w, v)
