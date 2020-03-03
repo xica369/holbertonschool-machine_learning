@@ -2,7 +2,6 @@
 
 """RMSProp Upgraded"""
 
-import numpy as np
 import tensorflow as tf
 
 
@@ -14,3 +13,9 @@ def create_RMSProp_op(loss, alpha, beta2, epsilon):
     beta2 is the RMSProp weight
     epsilon is a small number to avoid division by zero
     Returns: the RMSProp optimization operation"""
+
+    train = tf.train.RMSPropOptimizer(learning_rate=alpha,
+                                      momentum=beta2,
+                                      epsilon=epsilon)
+
+    return train.minimize(loss)
