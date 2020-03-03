@@ -2,7 +2,6 @@
 
 """Learning Rate Decay Upgraded"""
 
-import numpy as np
 import tensorflow as tf
 
 
