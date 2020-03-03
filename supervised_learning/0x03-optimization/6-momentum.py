@@ -2,7 +2,6 @@
 
 """Momentum Upgraded"""
 
-import numpy as np
 import tensorflow as tf
 
 
@@ -13,3 +12,8 @@ def create_momentum_op(loss, alpha, beta1):
     alpha is the learning rate
     beta1 is the momentum weight
     Returns: the momentum optimization operation"""
+
+    optimization = tf.train.MomentumOptimizer(learning_rate=alpha,
+                                              momentum=beta1)
+
+    return optimization.minimize(loss)
