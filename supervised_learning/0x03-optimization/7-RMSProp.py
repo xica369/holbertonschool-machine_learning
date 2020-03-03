@@ -2,12 +2,8 @@
 
 """RMSProp"""
 
-import numpy as np
-import tensorflow as tf
 
-
-def update_variables_RMSProp(alpha, beta2,
-                             epsilon, var, grad, s):
+def update_variables_RMSProp(alpha, beta2, epsilon, var, grad, s):
     """updates a variable using the RMSProp optimization algorithm:
     alpha is the learning rate
     beta2 is the RMSProp weight
@@ -17,3 +13,9 @@ def update_variables_RMSProp(alpha, beta2,
     s is the previous second moment of var
     Returns: the updated variable and the new moment, respectively
     """
+
+    e = epsilon
+    v = beta2 * s + (1 - beta2) * pow(grad, 2)
+    w = var - (grad * alpha / pow(v + e, 0.5))
+
+    return (w, v)
