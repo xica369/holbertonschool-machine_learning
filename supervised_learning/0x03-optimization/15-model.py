@@ -2,7 +2,6 @@
 
 """Put it all together and what do you get?"""
 
-import numpy as np
 import tensorflow as tf
 
 
