@@ -6,8 +6,7 @@ import numpy as np
 import tensorflow as tf
 
 
-def learning_rate_decay(alpha, decay_rate,
-                        global_step, decay_step):
+def learning_rate_decay(alpha, decay_rate, global_step, decay_step):
     """updates the learning rate using inverse time decay in numpy:
 
     alpha is the original learning rate
@@ -17,3 +16,7 @@ def learning_rate_decay(alpha, decay_rate,
     before alpha is decayed further
     the learning rate decay should occur in a stepwise fashion
     Returns: the updated value for alpha"""
+
+    decay = alpha / (1 + decay_rate * np.floor(global_step / decay_step))
+
+    return decay
