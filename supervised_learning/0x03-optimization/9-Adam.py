@@ -3,11 +3,9 @@
 """Adam optimization algorithm"""
 
 import numpy as np
-import tensorflow as tf
 
 
-def update_variables_Adam(alpha, beta1, beta2, epsilon,
-                          var, grad, v, s, t):
+def update_variables_Adam(alpha, beta1, beta2, epsilon, var, grad, v, s, t):
     """updates a variable in place with Adam optimization algorithm:
 
     alpha is the learning rate
@@ -22,3 +20,11 @@ def update_variables_Adam(alpha, beta1, beta2, epsilon,
     Returns: the updated variable, the new first moment,
     and the new second moment, respectively
     """
+
+    m = beta1 * s + (1 - beta1) * grad
+    m = m / (1 - np.power(beta1, t))
+    v = beta2 * v + (1 - beta2) * np.power(grad, 2)
+    v = v / (1 - np.power(beta2, t))
+    w = var - alpha * m / (np.sqrt(v) + epsilon)
+
+    return w, m, v
