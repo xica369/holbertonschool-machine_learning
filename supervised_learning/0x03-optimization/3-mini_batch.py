@@ -3,7 +3,6 @@
 """Mini-Batch"""
 
 import numpy as np
-import tensorflow as tf
 
 
 def train_mini_batch(X_train, Y_train, X_valid,
