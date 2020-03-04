@@ -3,7 +3,6 @@
 """Learning Rate Decay"""
 
 import numpy as np
-import tensorflow as tf
 
 
 def learning_rate_decay(alpha, decay_rate, global_step, decay_step):
