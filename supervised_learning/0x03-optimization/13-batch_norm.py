@@ -3,7 +3,6 @@
 """Batch Normalization"""
 
 import numpy as np
-import tensorflow as tf
 
 
 def batch_norm(Z, gamma, beta, epsilon):
@@ -19,3 +18,11 @@ def batch_norm(Z, gamma, beta, epsilon):
     used for batch normalization
     epsilon is a small number used to avoid division by zero
     Returns: the normalized Z matrix"""
+
+    mean = Z.mean(0)
+    varianza = Z.std(0)
+
+    z_n = (Z - mean) / (np.power(varianza, 2) + epsilon)
+    z = gamma * z_n + beta
+
+    return z
