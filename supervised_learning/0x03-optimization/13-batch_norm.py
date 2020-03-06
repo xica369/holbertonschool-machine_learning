@@ -20,9 +20,9 @@ def batch_norm(Z, gamma, beta, epsilon):
     Returns: the normalized Z matrix"""
 
     mean = Z.mean(0)
-    varianza = Z.std(0)
+    varianza = Z.var(0)
 
-    z_n = (Z - mean) / (np.power(varianza, 2) + epsilon)
+    z_n = (Z - mean) / np.sqrt(np.power(varianza, 2) + epsilon)
     z = gamma * z_n + beta
 
     return z
