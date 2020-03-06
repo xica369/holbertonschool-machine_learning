@@ -22,7 +22,7 @@ def batch_norm(Z, gamma, beta, epsilon):
     mean = Z.mean(0)
     varianza = Z.var(0)
 
-    z_n = (Z - mean) / np.sqrt(np.power(varianza, 2) + epsilon)
+    z_n = (Z - mean) / np.sqrt(varianza + epsilon)
     z = gamma * z_n + beta
 
     return z
