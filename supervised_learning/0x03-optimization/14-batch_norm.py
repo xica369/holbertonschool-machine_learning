@@ -22,9 +22,12 @@ def create_batch_norm_layer(prev, n, activation):
     )
 
     mean, variance = tf.nn.moments(x(prev), axes=0, keep_dims=False)
+<<<<<<< HEAD
 
     print(mean)
     print(variance)
+=======
+>>>>>>> 199267280ecb825231014868a1480f4db6efac95
 
     tensor = tf.nn.batch_normalization(
         x,
