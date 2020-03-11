@@ -2,8 +2,6 @@
 
 """L2 Regularization Cost"""
 
-import numpy as np
-
 
 def l2_reg_cost(cost):
     """calculates the cost of a neural network with L2 regularization:
