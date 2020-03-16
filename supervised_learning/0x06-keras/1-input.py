@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Input"""
+"""Builds a neural network"""
 
 import tensorflow.keras as K
 
