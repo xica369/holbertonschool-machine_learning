@@ -23,7 +23,7 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
         name="dense")(inputs)
 
     for layer in range(1, len(layers)):
-        dropout = K.layers.Dropout(keep_prob)(outputs)
+        dropout = K.layers.Dropout(rate=(1 - keep_prob))(outputs)
         outputs = K.layers.Dense(
             layers[layer],
             activation=activations[layer],
