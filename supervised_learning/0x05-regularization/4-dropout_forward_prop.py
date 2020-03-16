@@ -17,4 +17,20 @@ def dropout_forward_prop(X, weights, L, keep_prob):
     Returns: a dictionary with the outputs of each layer and
     the dropout mask used on each layer"""
 
-    m = X.shape[1]
+    cache = {}
+    cache['A0'] = X
+    z = np.dot(weights['W1'], X) + weights['b1']
+
+    for iter in range(1, L):
+        A = np.tanh(z)
+        D = np.random.binomial(n=1, p=keep_prob, size=A.shape)
+        A = A * D / keep_prob
+        z = np.dot(weights['W'+str(iter+1)], A) + weights['b'+str(iter+1)]
+
+        cache['A'+str(iter)] = A
+        cache['D'+str(iter)] = D
+
+    A = np.exp(z)/(np.sum(np.exp(z), axis=0, keepdims=True))
+    cache['A'+str(L)] = A
+
+    return cache
