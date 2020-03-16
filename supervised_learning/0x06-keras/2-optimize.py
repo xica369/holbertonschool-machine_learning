@@ -15,9 +15,9 @@ def optimize_model(network, alpha, beta1, beta2):
     beta2 is the second Adam optimization parameter
     Returns: None"""
 
-    adam = Adam(learning_rate=alpha, beta_1=beta1, beta_2=beta2)
-    network.compile(loss='categorical_crossentropy'
-                    optimizer=adam,
+    network.compile(optimizer=K.optimizers.Adam(learning_rate=alpha,
+                                                beta_1=beta1, beta_2=beta2),
+                    loss=K.losses.CategoricalCrossentropy(from_logits=True),
                     metrics=['accuracy'])
 
     return None
