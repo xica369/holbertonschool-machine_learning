@@ -26,7 +26,7 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
         ))
 
     for layer in range(1, len(layers)):
-        model.add(K.layers.Dropout(keep_prob))
+        model.add(K.layers.Dropout(rate=(1 - keep_prob)))
         model.add(K.layers.Dense(
             units=layers[layer],
             activation=activations[layer],
