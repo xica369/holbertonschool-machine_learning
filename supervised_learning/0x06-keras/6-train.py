@@ -12,7 +12,7 @@ def train_model(network, data, labels, batch_size, epochs,
 
     early_stop = None
 
-    if validation_data:
+    if validation_data and early_stopping:
         early_stop = [K.callbacks.EarlyStopping(
             monitor='val_loss',
             patience=patience)]
