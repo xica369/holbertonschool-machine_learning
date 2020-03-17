@@ -25,6 +25,8 @@ def load_config(filename):
     Returns: the loaded model"""
 
     with open(filename, "r") as json_file:
-        model = json_file.read()
+        json_save_model = json_file.read()
+
+    model = K.models.model_from_json(json_save_model)
 
     return model
