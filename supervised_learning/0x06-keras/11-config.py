@@ -11,7 +11,10 @@ def save_config(network, filename):
     filename is the path of the file that the configuration should be saved to
     Returns: None"""
 
-    network.to_json(filename)
+    json_model = network.to_json()
+
+    with open(filename, "w") as json_file:
+        json_file.write(json_model)
 
     return None
 
@@ -21,6 +24,7 @@ def load_config(filename):
     filename: path of the file with the model’s configuration in JSON format
     Returns: the loaded model"""
 
-    model = K.models.model_from_json(filename)
+    with open(filename, "r") as json_file:
+        model = json_file.read()
 
     return model
