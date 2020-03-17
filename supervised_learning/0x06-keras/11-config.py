@@ -11,7 +11,7 @@ def save_config(network, filename):
     filename is the path of the file that the configuration should be saved to
     Returns: None"""
 
-    filename = network.to_json()
+    network.to_json(filename)
 
     return None
 
