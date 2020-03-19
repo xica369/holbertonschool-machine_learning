@@ -16,4 +16,26 @@ import numpy as np
 
 def convolve_grayscale_valid(images, kernel):
     """Valid Convolution"""
-    
+
+    m = images.shape[0]
+    h = images.shape[1]
+    w = images.shape[2]
+
+    kh = kernel.shape[0]
+    kw = kernel.shape[1]
+
+    output_h = h - kh + 1
+    output_w = w - kw + 1
+
+    output = np.zeros((m, output_h, output_w))
+
+    image = np.arange(m)
+
+    for height in range(output_h):
+        for width in range(output_w):
+            output[image, height, width] = (np.sum(images[image,
+                                            height:height+kh,
+                                            width:width+kw] *
+                                            kernel, axis=(1, 2)))
+
+    return output
