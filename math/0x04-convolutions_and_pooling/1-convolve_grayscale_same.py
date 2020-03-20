@@ -26,7 +26,7 @@ def convolve_grayscale_same(images, kernel):
     kw = kernel.shape[1]
 
     if kh % 2 == 0:
-        p_h = np.floor(kh / 2)
+        p_h = int(kh / 2)
     else:
         p_h = int((kh - 1) / 2)
 
