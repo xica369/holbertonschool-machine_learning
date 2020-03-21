@@ -2,12 +2,12 @@
 
 """function that performs a convolution on images with channels:
 
-images: is a numpy.ndarray with shape (m, h, w, c) containing multiple images
+images: a numpy.ndarray with shape (m, h, w, c) containing multiple images
 m: is the number of images
 h: is the height in pixels of the images
 w: is the width in pixels of the images
 c: is the number of channels in the image
-kernel: numpy.ndarray with shape (kh, kw, c) with kernel for the convolution
+kernel: numpy.ndarray with shape (kh, kw, c) with kernel to convolution
 kh: is the height of the kernel
 kw: is the width of the kernel
 padding: is either a tuple of (ph, pw), ‘same’, or ‘valid’
