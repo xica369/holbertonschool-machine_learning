@@ -42,27 +42,24 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
         p_w = padding[1]
 
     if padding == "same":
-        p_h = 1 + int(((h - 1) * sh + kh - h) / 2)
-        p_w = 1 + int(((w - 1) * sw + kw - w) / 2)
+        p_h = int(((h-1)*sh+kh-h)/2) + 1
+        p_w = int(((w-1)*sw+kw-w)/2) + 1
 
     if padding == "valid":
         p_h = 0
         p_w = 0
 
-    output_h = int((h + (2 * p_h) - kh) / sh) + 1
-    output_w = int((w + (2 * p_w) - kw) / sw) + 1
+    i_p = np.pad(images, pad_width=((0, 0), (p_h, p_h), (p_w, p_w)),
+                 mode='constant', constant_values=0)
+    output_h = int(((h + (2 * p_h) - kh) / sh) + 1)
+    output_w = int(((w + (2 * p_w) - kw) / sw) + 1)
 
     output = np.zeros((m, output_h, output_w))
-
-    image = np.arange(m)
-    imag_p = np.pad(images, ((0, 0), (p_h, p_h), (p_w, p_w)),
-                    mode="constant", constant_values=0)
-
+    img = np.arange(m)
     for height in range(output_h):
         for width in range(output_w):
-            output[image, height, width] = (np.sum(imag_p[image,
-                                            height*sh:(height*sh)+kh,
-                                            width*sh:(width*sh)+kw] *
-                                            kernel, axis=(1, 2)))
-
+            output[img, height, width] = (np.sum(i_p[img,
+                                                   height*sh:((height*sh)+kh),
+                                                   width*sw:((width*sw)+kw)] *
+                                               kernel, axis=(1, 2)))
     return output
