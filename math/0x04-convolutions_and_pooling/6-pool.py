@@ -34,33 +34,3 @@ def pool(images, kernel_shape, stride, mode='max'):
 
     sh = stride[0]
     sw = stride[1]
-
-    if isinstance(padding, tuple):
-        p_h = padding[0]
-        p_w = padding[1]
-
-    if padding == "same":
-        p_h = int(((h-1)*sh+kh-h)/2) + 1
-        p_w = int(((w-1)*sw+kw-w)/2) + 1
-
-    if padding == "valid":
-        p_h = 0
-        p_w = 0
-
-    i_p = np.pad(images, pad_width=((0, 0), (p_h, p_h), (p_w, p_w)),
-                 mode='constant', constant_values=0)
-    output_h = int(((h + (2 * p_h) - kh) / sh) + 1)
-    output_w = int(((w + (2 * p_w) - kw) / sw) + 1)
-
-    output = np.zeros((m, output_h, output_w))
-    img = np.arange(m)
-    for height in range(output_h):
-        for width in range(output_w):
-            _h = (height*sh)+kh
-            _w = (width*sw)+kw
-            output[img, height, width] = (np.sum(i_p[img,
-                                                     height*sh:_h,
-                                                     width*sw:_w] *
-                                                 kernel_shape,
-                                                 axis=(1, 2)))
-    return output
