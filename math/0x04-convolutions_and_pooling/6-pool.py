@@ -29,8 +29,8 @@ def pool(images, kernel_shape, stride, mode='max'):
     h = images.shape[1]
     w = images.shape[2]
 
-    kh = kernel.shape[0]
-    kw = kernel.shape[1]
+    kh = kernel_shape[0]
+    kw = kernel_shape[1]
 
     sh = stride[0]
     sw = stride[1]
@@ -61,5 +61,6 @@ def pool(images, kernel_shape, stride, mode='max'):
             output[img, height, width] = (np.sum(i_p[img,
                                                      height*sh:_h,
                                                      width*sw:_w] *
-                                                 kernel, axis=(1, 2)))
+                                                 kernel_shape,
+                                                 axis=(1, 2)))
     return output
