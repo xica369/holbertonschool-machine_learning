@@ -28,9 +28,35 @@ def pool(images, kernel_shape, stride, mode='max'):
     m = images.shape[0]
     h = images.shape[1]
     w = images.shape[2]
+    cn = images.shape[3]
 
     kh = kernel_shape[0]
     kw = kernel_shape[1]
 
     sh = stride[0]
     sw = stride[1]
+
+    output_h = int((h - kh) / sh) + 1
+    output_w = int((w - kw) / sw) + 1
+
+    image = np.arange(m)
+    output = np.zeros((m, output_h, output_w, cn))
+
+    for height in range(output_h):
+        for width in range(output_w):
+            _h = (height * sh) + kh
+            _w = (width * sw) + kw
+
+            matrix = images[image,
+                            height*sh:_h,
+                            width*sw:_w]
+
+            if mode == "max":
+                output[image, height, width] = np.max(
+                    matrix, axis=(1, 2))
+
+            if mode == "avg":
+                output[image, height, width] = np.average(
+                    matrix, axis=(1, 2))
+
+    return output
