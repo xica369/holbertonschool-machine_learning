@@ -13,7 +13,9 @@ if __name__ == '__main__':
     images_pool = pool(images, (2, 2), (2, 2), mode='avg')
     print(images_pool.shape)
 
+    """
     plt.imshow(images[0])
     plt.show()
     plt.imshow(images_pool[0] / 255)
     plt.show()
+    """

@@ -17,6 +17,7 @@ if __name__ == '__main__':
     images_conv = convolve(images, kernels, padding='valid')
     print(images_conv.shape)
 
+    """
     plt.imshow(images[0])
     plt.show()
     plt.imshow(images_conv[0, :, :, 0])
@@ -25,3 +26,4 @@ if __name__ == '__main__':
     plt.show()
     plt.imshow(images_conv[0, :, :, 2])
     plt.show()
+    """
