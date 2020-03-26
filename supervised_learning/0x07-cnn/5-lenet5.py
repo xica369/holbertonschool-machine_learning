@@ -1,6 +1,6 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
-"""funct. that builds a modified version of the LeNet-5 architecture with keras:
+"""funct that builds a modified version of the LeNet-5 architecture with keras:
 
 X is a K.Input of shape (m, 28, 28, 1) with the input images for the network
   m is the number of images

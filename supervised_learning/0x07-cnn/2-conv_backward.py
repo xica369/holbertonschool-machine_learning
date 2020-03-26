@@ -15,13 +15,13 @@ the output of the previous layer
   h_prev is the height of the previous layer
   w_prev is the width of the previous layer
   c_prev is the number of channels in the previous layer
-W is a numpy.ndarray of shape (kh, kw, c_prev, c_new) containing the kernels for
+W is a numpy.ndarray of shape (kh, kw, c_prev, c_new) with the kernels for
 the convolution
   kh is the filter height
   kw is the filter width
 b is a numpy.ndarray of shape (1, 1, 1, c_new) containing the biases applied to
 the convolution
-padding is a string that is either same or valid, indicating the type of padding
+padding is a string that is either same or valid, indicating the type padding
 stride is a tuple of (sh, sw) containing the strides for the convolution
   sh is the stride for the height
   sw is the stride for the width
