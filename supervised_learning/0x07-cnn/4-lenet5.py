@@ -28,15 +28,6 @@ import tensorflow as tf
 def lenet5(x, y):
     """LeNet-5 (Tensorflow)"""
 
-    conv_kernels = [6, 16]
-    conv_kernels_size = [5, 2]
-    conv_paddings = ["same", "valid"]
-
-    pool_kernel_size = [2, 2]
-    pool_strides = [2, 2]
-
-    fc_nodes = [120, 84]
-
     he_normal = tf.contrib.layers.variance_scaling_initializer()
 
     layer1 = tf.layers.Conv2D(
@@ -61,7 +52,7 @@ def lenet5(x, y):
         pool_size=2,
         strides=2)(layer2)
 
-    flatten = tf.layers.Flatten()(layer2)
+    flatten = tf.layers.Flatten()(pool2)
 
     fc_layer1 = tf.contrib.layers.fully_connected(
         inputs=flatten,
