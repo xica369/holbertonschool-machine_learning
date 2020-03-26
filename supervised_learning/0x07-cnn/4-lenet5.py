@@ -69,11 +69,11 @@ def lenet5(x, y):
     fc_output = tf.contrib.layers.fully_connected(
         inputs=fc_layer2,
         num_outputs=10,
-        activation_fn=tf.nn.relu,
-        weights_initializer=None)
+        activation_fn=None,
+        weights_initializer=he_normal)
 
     softmax = tf.nn.softmax(fc_output)
-    loss = tf.losses.softmax_cross_entropy(y, softmax)
+    loss = tf.losses.softmax_cross_entropy(y, fc_output)
     train = tf.train.AdamOptimizer().minimize(loss)
 
     equality = tf.equal(tf.argmax(y, axis=1),
