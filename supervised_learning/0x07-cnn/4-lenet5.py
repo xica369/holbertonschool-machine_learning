@@ -38,37 +38,55 @@ def lenet5(x, y):
     fc_nodes = [120, 84]
 
     he_normal = tf.contrib.layers.variance_scaling_initializer()
-    layer = x
 
-    for iter in range(len(conv_kernels)):
-        layer_conv = tf.layers.Conv2D(
-            filters=conv_kernels[iter],
-            kernel_size=conv_kernels_size[iter],
-            kernel_initializer=he_normal,
-            activation=tf.nn.relu,
-            padding=conv_paddings[iter])(layer)
+    layer1 = tf.layers.Conv2D(
+        filters=6,
+        kernel_size=5,
+        kernel_initializer=he_normal,
+        activation=tf.nn.relu,
+        padding="same")(x)
 
-        layer = tf.layers.MaxPooling2D(
-            pool_size=pool_kernel_size,
-            strides=pool_strides[iter])(layer_conv)
+    pool1 = tf.layers.MaxPooling2D(
+        pool_size=2,
+        strides=2)(layer1)
 
-    fc = tf.layers.Flatten()(layer)
+    layer2 = tf.layers.Conv2D(
+        filters=16,
+        kernel_size=5,
+        kernel_initializer=he_normal,
+        activation=tf.nn.relu,
+        padding="valid")(pool1)
 
-    for iter in range(len(fc_nodes)):
-        fc = tf.layers.Dense(
-            units=fc_nodes[iter],
-            activation=tf.nn.relu,
-            kernel_initializer=he_normal)(fc)
+    pool2 = tf.layers.MaxPooling2D(
+        pool_size=2,
+        strides=2)(layer2)
 
-    fc_output = tf.layers.Dense(
-        units=10,
-        kernel_initializer=he_normal)(fc)
+    flatten = tf.layers.Flatten()(layer2)
+
+    fc_layer1 = tf.contrib.layers.fully_connected(
+        inputs=flatten,
+        num_outputs=120,
+        activation_fn=tf.nn.relu,
+        weights_initializer=he_normal)
+
+    fc_layer2 = tf.contrib.layers.fully_connected(
+        inputs=fc_layer1,
+        num_outputs=84,
+        activation_fn=tf.nn.relu,
+        weights_initializer=he_normal)
+
+    fc_output = tf.contrib.layers.fully_connected(
+        inputs=fc_layer2,
+        num_outputs=10,
+        activation_fn=tf.nn.relu,
+        weights_initializer=None)
 
     softmax = tf.nn.softmax(fc_output)
-    loss = tf.losses.softmax_cross_entropy(y, fc_output)
+    loss = tf.losses.softmax_cross_entropy(y, softmax)
     train = tf.train.AdamOptimizer().minimize(loss)
 
-    equality = tf.equal(tf.argmax(y, axis=1), tf.argmax(fc, axis=1))
+    equality = tf.equal(tf.argmax(y, axis=1),
+                        tf.argmax(softmax, axis=1))
     accuracy = tf.reduce_mean(tf.cast(equality, tf.float32))
 
     return softmax, train, loss, accuracy
