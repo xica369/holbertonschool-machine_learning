@@ -53,7 +53,7 @@ def lenet5(X):
 
     softmax = K.layers.Dense(units=10,
                              activation='softmax',
-                             kernel_initializer=he_normal)()
+                             kernel_initializer=he_normal)(layer_fc2)
 
     model = K.Model(inputs=X, outputs=softmax)
 
