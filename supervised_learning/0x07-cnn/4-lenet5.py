@@ -28,42 +28,45 @@ import tensorflow as tf
 def lenet5(x, y):
     """LeNet-5 (Tensorflow)"""
 
-    m = x.shape[0]
-
-    conv_kernels = [6, 16]
-    conv_kernels_size = [5, 2]
-    conv_paddings = ["same", "valid"]
-
-    pool_kernel_size = [2, 2]
-    pool_strides = [2, 2]
-
-    fc_nodes = [120, 84]
-
     he_normal = tf.contrib.layers.variance_scaling_initializer()
-    layer = x
 
-    for iter in range(len(conv_kernels)):
-        layer_conv = tf.layers.Conv2D(
-            filters=conv_kernels[iter],
-            kernel_size=conv_kernels_size[iter],
-            kernel_initializer=he_normal,
-            activation=tf.nn.relu)(layer)
+    layer_conv = tf.layers.Conv2D(
+        filters=6,
+        kernel_size=5,
+        kernel_initializer=he_normal,
+        activation=tf.nn.relu,
+        padding="same")(x)
 
-        layer = tf.layers.MaxPooling2D(
-            pool_size=pool_kernel_size,
-            strides=pool_strides[iter])(layer_conv)
+    layer = tf.layers.MaxPooling2D(
+        pool_size=[2, 2],
+        strides=2)(layer_conv)
 
-    fc = tf.layers.Flatten()(layer)
+    layer_conv1 = tf.layers.Conv2D(
+        filters=16,
+        kernel_size=5,
+        kernel_initializer=he_normal,
+        activation=tf.nn.relu,
+        padding="valid")(layer)
 
-    for iter in range(len(fc_nodes)):
-        fc = tf.layers.Dense(
-            units=fc_nodes[iter],
-            activation=tf.nn.relu,
-            kernel_initializer=he_normal)(fc)
+    layer1 = tf.layers.MaxPooling2D(
+        pool_size=[2, 2],
+        strides=2)(layer_conv1)
+
+    flact = tf.layers.Flatten()(layer1)
+
+    fc = tf.layers.Dense(
+        units=120,
+        activation=tf.nn.relu,
+        kernel_initializer=he_normal)(flact)
+
+    fc1 = tf.layers.Dense(
+        units=84,
+        activation=tf.nn.relu,
+        kernel_initializer=he_normal)(fc)
 
     fc_output = tf.layers.Dense(
         units=10,
-        kernel_initializer=he_normal)(fc)
+        kernel_initializer=he_normal)(fc1)
 
     softmax = tf.nn.softmax(fc_output)
     loss = tf.losses.softmax_cross_entropy(y, fc_output)
