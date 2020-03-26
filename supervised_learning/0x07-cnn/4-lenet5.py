@@ -37,8 +37,7 @@ def lenet5(x, y):
     pool_kernel_size = [2, 2]
     pool_strides = [2, 2]
 
-    fc_nodes = [120, 84, 10]
-    activation = [tf.nn.relu, tf.nn.relu, None]
+    fc_nodes = [120, 84]
 
     he_normal = tf.contrib.layers.variance_scaling_initializer()
     layer = x
@@ -59,11 +58,15 @@ def lenet5(x, y):
     for iter in range(len(fc_nodes)):
         fc = tf.layers.Dense(
             units=fc_nodes[iter],
-            activation=activation[iter],
+            activation=tf.nn.relu,
             kernel_initializer=he_normal)(fc)
 
-    softmax = tf.nn.softmax(fc)
-    loss = tf.losses.softmax_cross_entropy(y, fc)
+    fc_output = tf.layers.Dense(
+        units=10,
+        kernel_initializer=he_normal)(fc)
+
+    softmax = tf.nn.softmax(fc_output)
+    loss = tf.losses.softmax_cross_entropy(y, fc_output)
     train = tf.train.AdamOptimizer().minimize(loss)
 
     equality = tf.equal(tf.argmax(y, axis=1), tf.argmax(fc, axis=1))
