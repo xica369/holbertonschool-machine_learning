@@ -21,3 +21,41 @@ import tensorflow.keras as K
 
 def lenet5(X):
     """LeNet-5 (Keras)"""
+    he_normal = K.initializers.he_normal()
+    cv_l1 = K.layers.Conv2D(filters=6,
+                              kernel_size=(5, 5),
+                              padding='same',
+                              kernel_initializer=he_normal,
+                              activation='relu')(X)
+
+    pool_l2 = K.layers.MaxPooling2D(pool_size=(2, 2),
+                                       strides=(2, 2))(cv_l1)
+
+    cv_l3 = K.layers.Conv2D(filters=16,
+                              kernel_size=(5, 5),
+                              padding='valid',
+                              kernel_initializer=he_normal,
+                              activation='relu')(pool_l2)
+
+    pool_l4 = K.layers.MaxPooling2D(pool_size=(2, 2),
+                                       strides=(2, 2))(cv_l3)
+
+    flatten5 = K.layers.Flatten()(pool_l4)
+    fc_l5 = K.layers.Dense(units=120,
+                            activation='relu',
+                            kernel_initializer=he_normal)(flatten5)
+
+    fc_l6 = K.layers.Dense(units=84,
+                              activation='relu',
+                              kernel_initializer=he_normal)(fc_l5)
+
+    sfmx_lyr = K.layers.Dense(units=10,
+                              activation='softmax',
+                              kernel_initializer=he_normal)(fc_l6)
+
+    model = K.Model(inputs=X, outputs=sfmx_lyr)
+    model.compile(optimizer='Adam',
+                  loss='categorical_crossentropy',
+                  metrics=['accuracy'])
+
+    return model
