@@ -21,39 +21,42 @@ import tensorflow.keras as K
 
 def lenet5(X):
     """LeNet-5 (Keras)"""
+
     he_normal = K.initializers.he_normal()
-    cv_lyr1 = K.layers.Conv2D(filters=6,
-                              kernel_size=(5, 5),
-                              padding='same',
-                              kernel_initializer=he_normal,
-                              activation='relu')(X)
 
-    pool_lyr_2 = K.layers.MaxPooling2D(pool_size=(2, 2),
-                                       strides=(2, 2))(cv_lyr1)
+    layer_conv1 = K.layers.Conv2D(filters=6,
+                                  kernel_size=(5, 5),
+                                  padding='same',
+                                  kernel_initializer=he_normal,
+                                  activation='relu')(X)
 
-    cv_lyr3 = K.layers.Conv2D(filters=16,
-                              kernel_size=(5, 5),
-                              padding='valid',
-                              kernel_initializer=he_normal,
-                              activation='relu')(pool_lyr_2)
+    layer_pool1 = K.layers.MaxPooling2D(pool_size=(2, 2),
+                                        strides=(2, 2))(layer_conv1)
 
-    pool_lyr_4 = K.layers.MaxPooling2D(pool_size=(2, 2),
-                                       strides=(2, 2))(cv_lyr3)
+    layer_conv2 = K.layers.Conv2D(filters=16,
+                                  kernel_size=(5, 5),
+                                  padding='valid',
+                                  kernel_initializer=he_normal,
+                                  activation='relu')(layer_pool1)
 
-    flatten5 = K.layers.Flatten()(pool_lyr_4)
-    fc_lyr_5 = K.layers.Dense(units=120,
-                              activation='relu',
-                              kernel_initializer=he_normal)(flatten5)
+    layer_pool2 = K.layers.MaxPooling2D(pool_size=(2, 2),
+                                        strides=(2, 2))(layer_conv2)
 
-    fc_lyr_6 = K.layers.Dense(units=84,
-                              activation='relu',
-                              kernel_initializer=he_normal)(fc_lyr_5)
+    flatten = K.layers.Flatten()(layer_pool2)
+    layer_fc1 = K.layers.Dense(units=120,
+                               activation='relu',
+                               kernel_initializer=he_normal)(flatten)
 
-    sfmx_lyr = K.layers.Dense(units=10,
-                              activation='softmax',
-                              kernel_initializer=he_normal)(fc_lyr_6)
+    layer_fc2 = K.layers.Dense(units=84,
+                               activation='relu',
+                               kernel_initializer=he_normal)(layer_fc1)
 
-    model = K.Model(inputs=X, outputs=sfmx_lyr)
+    softmax = K.layers.Dense(units=10,
+                             activation='softmax',
+                             kernel_initializer=he_normal)()
+
+    model = K.Model(inputs=X, outputs=softmax)
+
     model.compile(optimizer='Adam',
                   loss='categorical_crossentropy',
                   metrics=['accuracy'])
