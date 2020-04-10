@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # # 0x09. Transfer Learning
 
 This project uses learning transfer with keras applications of the VGG16 model to train convolutional neural networks to classify the CIFAR 10 data set.
@@ -33,3 +34,6 @@ It has a script to evaluate the model saved in the `cifar10.h5` file
 ## Author
 
 * [**Carolina Andrade**](https://github.com/xica369)
+=======
+0x09. Transfer Learning
+>>>>>>> 8e3bed36e29daaba7ebd7c4f05ebec1bc54f8097

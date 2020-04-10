@@ -23,11 +23,19 @@ def preprocess_data(X, Y):
 
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     """transfer learning and model training"""
 
     batch_size = 100
     num_classes = 10
     epochs = 1
+=======
+
+    batch_size = 64
+    num_classes = 10
+    epochs = 3
+    num_predictions = 20
+>>>>>>> 8e3bed36e29daaba7ebd7c4f05ebec1bc54f8097
     model_name = "cifar10.h5"
 
     # the data, split between train and test sets:
@@ -50,7 +58,12 @@ if __name__ == "__main__":
         pooling=None,
         classes=num_classes)
 
+<<<<<<< HEAD
     # allows block 5 of the model to be trainable
+=======
+    pre_trained_model.summary()
+
+>>>>>>> 8e3bed36e29daaba7ebd7c4f05ebec1bc54f8097
     pre_trained_model.trainable = True
     set_trainable = False
 
@@ -62,6 +75,7 @@ if __name__ == "__main__":
         else:
             layer.trainable = False
 
+<<<<<<< HEAD
     # create a new model and add layers
     model = K.models.Sequential([
         pre_trained_model,
@@ -80,14 +94,42 @@ if __name__ == "__main__":
 
     # model training
     early_stop = [K.callbacks.EarlyStopping()]
+=======
+    model = K.models.Sequential([
+        pre_trained_model,
+        K.layers.Dropout(0.5),
+        K.layers.Flatten(),
+        K.layers.Dense(256, activation="relu", input_shape=(32, 32, 3)),
+        K.layers.Dropout(0.2),
+        K.layers.Dense(10, activation="sigmoid"),
+    ])
+
+    model.compile(loss="binary_crossentropy",
+                  optimizer=K.optimizers.RMSprop(lr=1e-4),
+                  metrics=["acc"])
+
+    early_stop = [K.callbacks.EarlyStopping()]
+
+>>>>>>> 8e3bed36e29daaba7ebd7c4f05ebec1bc54f8097
     history = model.fit(x=x_train,
                         y=y_train,
                         batch_size=batch_size,
                         epochs=epochs,
+<<<<<<< HEAD
                         verbose=1,
                         shuffle=True,
                         validation_data=(x_test, y_test),
                         callbacks=early_stop)
 
     # save the model
+=======
+                        verbose=2,
+                        shuffle=False,
+                        validation_data=(x_test, y_test),
+                        callbacks=early_stop)
+
+    evaluate = model.evaluate(x_test, y_test)
+    print("test_loss - test_acc ", evaluate)
+
+>>>>>>> 8e3bed36e29daaba7ebd7c4f05ebec1bc54f8097
     model.save(model_name)
