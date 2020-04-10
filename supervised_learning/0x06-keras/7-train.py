@@ -12,20 +12,18 @@ def train_model(network, data, labels, batch_size, epochs,
     """function that trains a model using mini-batch gradient descent"""
 
     def scheduler(epoch):
-        """calcule sheduler - learning rate"""
-        sched = alpha / (1 + decay_rate * epoch)
-        return sched
+        """calcule learning rate schedule"""
+        learning_rate = alpha / (1 + decay_rate * epoch)
+        return learning_rate
 
     callbacks = []
 
     if validation_data:
-        decay = K.callbacks.LearningRateScheduler(scheduler, verbose=1)
+        decay = K.callbacks.LearningRateScheduler(scheduler)
         callbacks.append(decay)
 
     if validation_data and early_stopping:
-        early_stop = K.callbacks.EarlyStopping(
-            monitor='val_loss',
-            patience=patience)
+        early_stop = K.callbacks.EarlyStopping(patience=patience)
         callbacks.append(early_stop)
 
     else:
