@@ -3,6 +3,7 @@
 """trains a convolutional neural network to classify the CIFAR 10 dataset"""
 
 import tensorflow.keras as K
+import numpy as np
 
 
 def preprocess_data(X, Y):
@@ -25,9 +26,9 @@ def preprocess_data(X, Y):
 if __name__ == "__main__":
     """transfer learning and model training"""
 
-    batch_size = 100
+    batch_size = 50
     num_classes = 10
-    epochs = 1
+    epochs = 50
     model_name = "cifar10.h5"
 
     # the data, split between train and test sets:
@@ -37,25 +38,32 @@ if __name__ == "__main__":
     y_test = K.utils.to_categorical(y_test, num_classes=10)
     y_train = K.utils.to_categorical(y_train, num_classes=10)
 
-    # preprocess
-    x_train = K.applications.vgg16.preprocess_input(x_train)
-    x_test = K.applications.vgg16.preprocess_input(x_test)
+    # data augmentation
+    data_augmentation_x = np.fliplr(x_train)
+    data_augmentation_y = np.fliplr(y_train)
+    x_train = np.concatenate([x_train, data_augmentation_x])
+    y_train = np.concatenate([y_train, data_augmentation_y])
 
-    # transfer learning with vgg16
-    pre_trained_model = K.applications.vgg16.VGG16(
+    # preprocess
+    x_train = K.applications.densenet.preprocess_input(x_train)
+    x_test = K.applications.densenet.preprocess_input(x_test)
+    # x_train = x_train.astype("float32") / 255
+    # x_test = x_test.astype("float32") / 255
+
+    # transfer learning with denseNet121
+    pre_trained_model = K.applications.DenseNet201(
         include_top=False,
         weights='imagenet',
         input_tensor=None,
         input_shape=(32, 32, 3),
-        pooling=None,
+        pooling="avg",
         classes=num_classes)
 
-    # allows block 5 of the model to be trainable
+    # set model to be no trainable
     pre_trained_model.trainable = True
     set_trainable = False
-
     for layer in pre_trained_model.layers:
-        if layer.name == "block5_conv1":
+        if "conv5" in layer.name or "conv4" in layer.name:
             set_trainable = True
         if set_trainable:
             layer.trainable = True
@@ -67,33 +75,34 @@ if __name__ == "__main__":
         pre_trained_model,
         K.layers.Dropout(0.3),
         K.layers.Flatten(),
+        K.layers.Dense(512, activation="relu", input_shape=(32, 32, 3)),
+        K.layers.Dropout(0.3),
         K.layers.Dense(256, activation="relu", input_shape=(32, 32, 3)),
         K.layers.Dropout(0.5),
         K.layers.Dense(num_classes, activation="softmax"),
     ])
 
-    # model compilation
-    opti = K.optimizers.RMSprop(lr=1e-4)
-    model.compile(loss="binary_crossentropy",
-                  optimizer=opti,
-                  metrics=["acc"])
-
-    # model training
-    early_stop = [K.callbacks.EarlyStopping()]
-
-    model = K.models.Sequential([
-        pre_trained_model,
-        K.layers.Dropout(0.3),
-        K.layers.Flatten(),
-        K.layers.Dense(256, activation="relu", input_shape=(32, 32, 3)),
-        K.layers.Dropout(0.5),
-        K.layers.Dense(10, activation="softmax"),
-    ])
+    # optimizer
+    opt = K.optimizers.Adam()
 
     # model compilation
     model.compile(loss="categorical_crossentropy",
-                  optimizer=K.optimizers.RMSprop(lr=1e-4),
+                  optimizer=opt,
                   metrics=["acc"])
+
+    # set callbacks
+    callbacks = []
+
+    save_best = K.callbacks.ModelCheckpoint(model_name,
+                                            monitor='val_accuracy',
+                                            save_best_only=True,
+                                            mode="max")
+    callbacks.append(save_best)
+    reduce_lr = K.callbacks.ReduceLROnPlateau(monitor="val_acc",
+                                              factor=.01,
+                                              patience=3,
+                                              min_lr=1e-5)
+    callbacks.append(reduce_lr)
 
     # model training
     early_stop = [K.callbacks.EarlyStopping()]
@@ -104,7 +113,4 @@ if __name__ == "__main__":
                         verbose=1,
                         shuffle=True,
                         validation_data=(x_test, y_test),
-                        callbacks=early_stop)
-
-    # save the model
-    model.save(model_name)
+                        callbacks=callbacks)
