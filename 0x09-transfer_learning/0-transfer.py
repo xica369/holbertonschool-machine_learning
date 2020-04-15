@@ -17,7 +17,7 @@ def preprocess_data(X, Y):
     X_p is a numpy.ndarray containing the preprocessed X
     Y_p is a numpy.ndarray containing the preprocessed Y"""
 
-    X_p = K.applications.vgg16.preprocess_input(X)
+    X_p = K.applications.densenet.preprocess_input(X)
     Y_p = K.utils.to_categorical(Y, num_classes=10)
 
     return (X_p, Y_p)
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     # x_test = x_test.astype("float32") / 255
 
     # transfer learning with denseNet121
-    pre_trained_model = K.applications.DenseNet201(
+    pre_trained_model = K.applications.densenet.DenseNet201(
         include_top=False,
         weights='imagenet',
         input_tensor=None,
