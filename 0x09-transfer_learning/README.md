@@ -1,6 +1,6 @@
 # # 0x09. Transfer Learning
 
-This project uses learning transfer with keras applications of the VGG16 model to train convolutional neural networks to classify the CIFAR 10 data set.
+This project uses learning transfer with keras applications of the denseNet201 model to train convolutional neural networks to classify the CIFAR 10 data set.
 
 ## Requirements
 
