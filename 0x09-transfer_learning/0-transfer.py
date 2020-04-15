@@ -105,7 +105,6 @@ if __name__ == "__main__":
     callbacks.append(reduce_lr)
 
     # model training
-    early_stop = [K.callbacks.EarlyStopping()]
     history = model.fit(x=x_train,
                         y=y_train,
                         batch_size=batch_size,
