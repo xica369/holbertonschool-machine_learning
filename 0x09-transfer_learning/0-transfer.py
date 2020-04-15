@@ -50,7 +50,7 @@ if __name__ == "__main__":
     # x_train = x_train.astype("float32") / 255
     # x_test = x_test.astype("float32") / 255
 
-    # transfer learning with denseNet121
+    # transfer learning with denseNet201
     pre_trained_model = K.applications.densenet.DenseNet201(
         include_top=False,
         weights='imagenet',
@@ -59,7 +59,7 @@ if __name__ == "__main__":
         pooling="avg",
         classes=num_classes)
 
-    # set model to be no trainable
+    # set model to be trainable
     pre_trained_model.trainable = True
     set_trainable = False
     for layer in pre_trained_model.layers:
