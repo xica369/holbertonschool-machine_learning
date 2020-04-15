@@ -47,8 +47,8 @@ if __name__ == "__main__":
     # preprocess
     x_train = K.applications.densenet.preprocess_input(x_train)
     x_test = K.applications.densenet.preprocess_input(x_test)
-    # x_train = x_train.astype("float32") / 255
-    # x_test = x_test.astype("float32") / 255
+    x_train = x_train.astype("float32") / 255
+    x_test = x_test.astype("float32") / 255
 
     # transfer learning with denseNet201
     pre_trained_model = K.applications.densenet.DenseNet201(
