@@ -76,7 +76,7 @@ if __name__ == "__main__":
         K.layers.Flatten(),
         K.layers.Dense(1024, activation="relu", input_shape=(32, 32, 3)),
         K.layers.Dropout(0.3),
-        K.layers.Dense(512, activation="relu")
+        K.layers.Dense(512, activation="relu"),
         K.layers.Dropout(0.3),
         K.layers.Dense(num_classes, activation="softmax"),
     ])
