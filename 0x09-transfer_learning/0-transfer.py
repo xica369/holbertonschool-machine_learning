@@ -47,8 +47,8 @@ if __name__ == "__main__":
     # preprocess
     x_train = K.applications.densenet.preprocess_input(x_train)
     x_test = K.applications.densenet.preprocess_input(x_test)
-    # x_train = x_train.astype("float32") / 255
-    # x_test = x_test.astype("float32") / 255
+    x_train = x_train.astype("float32") / 255
+    x_test = x_test.astype("float32") / 255
 
     # transfer learning with denseNet201
     pre_trained_model = K.applications.densenet.DenseNet201(
@@ -73,11 +73,10 @@ if __name__ == "__main__":
     # create a new model and add layers
     model = K.models.Sequential([
         pre_trained_model,
-        K.layers.Dropout(0.3),
         K.layers.Flatten(),
-        K.layers.Dense(512, activation="relu", input_shape=(32, 32, 3)),
+        K.layers.Dense(1024, activation="relu", input_shape=(32, 32, 3)),
         K.layers.Dropout(0.3),
-        K.layers.Dense(256, activation="relu", input_shape=(32, 32, 3)),
+        K.layers.Dense(512, activation="relu")
         K.layers.Dropout(0.5),
         K.layers.Dense(num_classes, activation="softmax"),
     ])
