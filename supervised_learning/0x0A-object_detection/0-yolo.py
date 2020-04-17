@@ -28,8 +28,8 @@ class Yolo:
         self.class_names = []
         with open(classes_path, "r") as file:
             for line in file:
-                #class_name = line.strip()
-                self.class_names.append(line)
+                class_name = line.strip()
+                self.class_names.append(class_name)
 
         self.class_t = class_t
         self.nms_t = nms_t
