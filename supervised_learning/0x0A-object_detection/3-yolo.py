@@ -4,8 +4,6 @@
 
 import tensorflow.keras as K
 import numpy as np
-import glob
-import cv2
 
 
 class Yolo:
@@ -128,7 +126,6 @@ class Yolo:
     def filter_boxes(self, boxes, box_confidences, box_class_probs):
         """Filter Boxes"""
 
-        class_t = self.class_t
         filtered_boxes = []
         box_classes = []
         box_scores = []
@@ -173,50 +170,3 @@ class Yolo:
         predicted_box_scores = []
 
         return (box_predictions, predicted_box_classes, predicted_box_scores)
-
-    @staticmethod
-    def load_images(folder_path):
-        """function that load images
-
-        folder_path: a string representing the path to the folder holding all
-        the images to load
-        Returns a tuple of (images, image_paths):
-        images: a list of images as numpy.ndarrays
-        image_paths: a list of paths to the individual images in images"""
-
-        images = []
-
-        image_paths = glob.glob(folder_path + "/*")
-
-        for image in image_paths:
-            img_read = cv2.imread(image)
-            images.append(img_read)
-
-        return (images, image_paths)
-
-    def preprocess_images(self, images):
-        """Preprocess images"""
-
-        input_width = self.model.input.shape[1].value
-        input_height = self.model.input.shape[2].value
-
-        resize = (input_width, input_height)
-        image_shapes = []
-        pimages = []
-
-        for image in images:
-            shape = image.shape[:2]
-            image_shapes.append(shape)
-
-            image_resize = cv2.resize(image,
-                                      resize,
-                                      interpolation=cv2.INTER_CUBIC)
-
-            image_rescaled = image_resize/255
-
-            pimages.append(image_rescaled)
-
-        pimages = np.stack(pimages, axis=0)
-        image_shapes = np.stack(image_shapes, axis=0)
-
-        return (pimages, image_shapes)
