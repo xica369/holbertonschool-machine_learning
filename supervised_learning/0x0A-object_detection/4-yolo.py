@@ -164,62 +164,15 @@ class Yolo:
 
         return (filtered_boxes, box_classes, box_scores)
 
-    def keeped_boxes_iou(self, filtered_boxes, box_scores):
-        """
-        function keeped boxes iou
-        """
-        x = filtered_boxes[:, 0]
-        y = filtered_boxes[:, 1]
-        w = filtered_boxes[:, 2]
-        h = filtered_boxes[:, 3]
-
-        areas = w * h
-
-        order = box_scores.argsort()[::-1]
-
-        keep = []
-        while order.size > 0:
-            i = order[0]
-            keep.append(i)
-
-            xx1 = np.maximum(x[i], x[order[1:]])
-            yy1 = np.maximum(y[i], y[order[1:]])
-            xx2 = np.minimum(x[i] + w[i], x[order[1:]] + w[order[1:]])
-            yy2 = np.minimum(y[i] + h[i], y[order[1:]] + h[order[1:]])
-
-            w1 = np.maximum(0.0, xx2 - xx1 + 1)
-            h1 = np.maximum(0.0, yy2 - yy1 + 1)
-            inter = w1 * h1
-
-            ovr = inter / (areas[i] + areas[order[1:]] - inter)
-            inds = np.where(ovr <= self.nms_t)[0]
-            order = order[inds + 1]
-
-        keep = np.array(keep)
-        return(keep)
-
     def non_max_suppression(self, filtered_boxes, box_classes, box_scores):
         """
         Non-max Suppression
         """
-        nboxes, nclasses, nscores = [], [], []
-        for c in set(box_classes):
-            inds = np.where(box_classes == c)
-            b = filtered_boxes[inds]
-            c = box_classes[inds]
-            s = box_scores[inds]
+        box_predictions = []
+        predicted_box_classes = []
+        predicted_box_scores = []
 
-            keep = self.keeped_boxes_iou(b, s)
-
-            nboxes.append(b[keep])
-            nclasses.append(c[keep])
-            nscores.append(s[keep])
-
-        boxes_predic = np.concatenate(nboxes)
-        classes_predic = np.concatenate(nclasses)
-        scores_predic = np.concatenate(nscores)
-
-        return (boxes_predic, classes_predic, scores_predic)
+        return (box_predictions, predicted_box_classes, predicted_box_scores)
 
     @staticmethod
     def load_images(folder_path):
