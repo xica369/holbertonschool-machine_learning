@@ -163,10 +163,55 @@ class Yolo:
 
     def non_max_suppression(self, filtered_boxes, box_classes, box_scores):
         """
-        Non-max Suppression
+        method that applies Non-max Suppression
         """
         box_predictions = []
         predicted_box_classes = []
         predicted_box_scores = []
+
+        for classes in set(box_classes):
+            index = np.where(box_classes == classes)
+
+            filtered = filtered_boxes[index]
+            scores = box_scores[index]
+            classe = box_classes[index]
+
+            x1 = filtered[:, 0]
+            x2 = filtered[:, 2]
+            y1 = filtered[:, 1]
+            y2 = filtered[:, 3]
+
+            keep = []
+            area = (x2 - x1) * (y2 - y1)
+            index_list = np.flip(scores.argsort(), axis=0)
+
+            while len(index_list) > 0:
+                pos1 = index_list[0]
+                pos2 = index_list[1:]
+                keep.append(pos1)
+
+                xx1 = np.maximum(x1[pos1], x1[pos2])
+                yy1 = np.maximum(y1[pos1], y1[pos2])
+                xx2 = np.minimum(x2[pos1], x2[pos2])
+                yy2 = np.minimum(y2[pos1], y2[pos2])
+
+                height = np.maximum(0.0, yy2 - yy1)
+                width = np.maximum(0.0, xx2 - xx1)
+
+                intersection = (width * height)
+                union = area[pos1] + area[pos2] - intersection
+                iou = intersection / union
+                below_threshold = np.where(iou <= self.nms_t)[0]
+                index_list = index_list[below_threshold + 1]
+
+            keep = np.array(keep)
+
+            box_predictions.append(filtered[keep])
+            predicted_box_classes.append(classe[keep])
+            predicted_box_scores.append(scores[keep])
+
+        box_predictions = np.concatenate(box_predictions)
+        predicted_box_classes = np.concatenate(predicted_box_classes)
+        predicted_box_scores = np.concatenate(predicted_box_scores)
 
         return (box_predictions, predicted_box_classes, predicted_box_scores)
