@@ -282,11 +282,11 @@ class Yolo:
             stroke_color = (255, 0, 0)
             stroke_thickness = 2
 
-            cv2.rectangle(image,
-                          coordinates_top_left,
-                          coordinates_lower_right,
-                          stroke_color,
-                          stroke_thickness)
+            image = cv2.rectangle(image,
+                                  coordinates_top_left,
+                                  coordinates_lower_right,
+                                  stroke_color,
+                                  stroke_thickness)
 
             # Write text on images
             class_name = self.class_names[box_classes[iter]]
@@ -299,21 +299,22 @@ class Yolo:
             text_thickness = 1
             type_line = cv2.LINE_AA
 
-            cv2.putText(image,
-                        text_written,
-                        coordinates_start,
-                        font,
-                        font_scale,
-                        text_color,
-                        text_thickness,
-                        type_line)
+            image = cv2.putText(image,
+                                text_written,
+                                coordinates_start,
+                                font,
+                                font_scale,
+                                text_color,
+                                text_thickness,
+                                type_line)
 
-            # show image
-
+        # show image
         cv2.imshow(file_name, image)
         key = cv2.waitKey(0)
         if key == ord("s"):
             if not os.path.exists("detections"):
                 os.makedirs("detections")
-            cv2.imwrite("detections" + file_name, image)
+            os.chdir("detections")
+            cv2.imwrite(file_name, image)
+            os.chdir("../")
         cv2.destroyAllWindows()
