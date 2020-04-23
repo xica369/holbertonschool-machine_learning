@@ -290,8 +290,8 @@ class Yolo:
 
             # Write text on images
             class_name = self.class_names[box_classes[iter]]
-            score = np.around(box_scores, decimals=2)
-            text_written = ("{} {}".format(class_name, score))
+            score = box_scores[iter]
+            text_written = ("{} {:.2f}".format(class_name, score))
             coordinates_start = (x1, y2 - 5)
             font = cv2.FONT_HERSHEY_SIMPLEX
             font_scale = 0.5
