@@ -96,7 +96,7 @@ class Binomial:
             return 0
 
         cdf = 0
-        for num in range(k):
+        for num in range(k + 1):
             cdf = cdf + self.pmf(num)
 
         return cdf
