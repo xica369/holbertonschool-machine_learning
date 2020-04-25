@@ -52,9 +52,7 @@ def save_images(path, images, filenames):
     Returns: True on success and False on failure"""
 
     try:
-        for iter in len(images):
-            image = images[iter]
-            filename = filenames[iter]
+        for filename, image in zip(filenames, images):
             path = "./{}/{}".format(path, filename)
             img = cv2.imread(image, 1)
             cv2.imwrite(path, img)
@@ -63,3 +61,26 @@ def save_images(path, images, filenames):
 
     except Exception:
         return False
+
+
+def generate_triplets(images, filenames, triplet_names):
+    """function that generates triplets:
+
+    images is a numpy.ndarray of shape (n, h, w, 3)
+    containing the various images in the dataset
+    filenames is a list of length n containing the corresponding
+    filenames for images
+    triplet_names is a list of lists where each sublist contains the filenames
+    of an anchor, positive, and negative image, respectively
+
+    Returns: a list [A, P, N]
+    A is a numpy.ndarray of shape (m, h, w, 3)
+    containing the anchor images for all m triplets
+    P is a numpy.ndarray of shape (m, h, w, 3)
+    containing the positive images for all m triplets
+    N is a numpy.ndarray of shape (m, h, w, 3)
+    containing the negative images for all m triplets"""
+
+    triplet_images = []
+
+    return triplet_images
