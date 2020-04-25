@@ -4,6 +4,7 @@
 
 import dlib
 import numpy as np
+import cv2
 
 
 class FaceAlign:
@@ -64,3 +65,23 @@ class FaceAlign:
 
         except Exception:
             return None
+
+    def align(self, image, landmark_indices, anchor_points, size=96):
+        """method that aligns an image for face verification"""
+
+        detection = self.detect(image)
+        landmark_coordinates = self.find_landmarks(image, detection)
+
+        np_landmark_coordinates = np.float32(landmark_coordinates)
+        initial_points = np_landmark_coordinates[landmark_indices]
+        destination_points = size * anchor_points
+        map_matrix = cv2.getAffineTransform(initial_points, destination_points)
+        affine_dim = (size, size)
+
+        affine_transformation = cv2.warpAffine(src=image,
+                                               M=map_matrix,
+                                               dsize=affine_dim,
+                                               borderMode=cv2.BORDER_CONSTANT,
+                                               borderValue=0)
+
+        return affine_transformation
