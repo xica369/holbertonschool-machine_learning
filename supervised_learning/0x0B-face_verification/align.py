@@ -3,6 +3,7 @@
 """Create the class FaceAlign"""
 
 import dlib
+import numpy as np
 
 
 class FaceAlign:
@@ -42,6 +43,24 @@ class FaceAlign:
                 box_face = dlib.rectangle(x, y, (w + x), (h + y))
 
             return box_face
+
+        except Exception:
+            return None
+
+    def find_landmarks(self, image, detection):
+        """that finds facial landmarks"""
+
+        try:
+            landmarks = self.shape_predictor(image, detection)
+            landmarks_list = []
+            num_landmarks = landmarks.num_parts
+            landmarks_coordinates = np.empty((num_landmarks, 2))
+
+            for iter in range(0, num_landmarks):
+                landmarks_coordinates[iter] = [landmarks.part(iter).x,
+                                               landmarks.part(iter).y]
+
+            return landmarks_coordinates
 
         except Exception:
             return None
