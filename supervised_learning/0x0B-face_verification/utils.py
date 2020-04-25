@@ -6,6 +6,7 @@ import os
 import glob
 import cv2
 import numpy as np
+import csv
 
 
 def load_images(images_path, as_array=True):
@@ -26,3 +27,16 @@ def load_images(images_path, as_array=True):
         images = np.stack(images)
 
     return (images, filenames)
+
+
+def load_csv(csv_path, params={}):
+    """function that loads the contents of a csv file as a list of lists"""
+
+    csv_list = []
+
+    with open(csv_path, "r") as csv_file:
+        csv_reader = csv.reader(csv_file, params)
+        for row in csv_reader:
+            csv_list.append(row)
+
+    return csv_list
