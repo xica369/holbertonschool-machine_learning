@@ -52,10 +52,12 @@ def save_images(path, images, filenames):
     Returns: True on success and False on failure"""
 
     try:
-        for filename, image in zip(filenames, images):
+        for iter in range(len(images)):
+            filename = filenames[iter]
+            image = images[iter]
             path = "./{}/{}".format(path, filename)
-            img = cv2.imread(image, 1)
-            cv2.imwrite(path, img)
+            img_readed = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            cv2.imwrite(path, img_readed)
 
         return True
 
