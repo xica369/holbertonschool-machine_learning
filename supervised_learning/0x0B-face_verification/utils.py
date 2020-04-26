@@ -51,18 +51,16 @@ def save_images(path, images, filenames):
 
     Returns: True on success and False on failure"""
 
-    try:
-        for iter in range(len(images)):
-            filename = filenames[iter]
-            image = images[iter]
-            path = "./{}/{}".format(path, filename)
-            img_readed = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-            cv2.imwrite(path, img_readed)
-
-        return True
-
-    except Exception:
+    if not (os.path.exists(path)):
         return False
+
+    for index in range(len(images)):
+        filename = filenames[index]
+        image = images[index]
+        path_img = "./{}/{}".format(path, filename)
+        img_readed = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        cv2.imwrite(path_img, img_readed)
+    return True
 
 
 def generate_triplets(images, filenames, triplet_names):
