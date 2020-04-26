@@ -35,3 +35,16 @@ class TripletLoss(tensorflow.keras.layers.Layer):
         loss = tf.maximum(margin + d_posit - d_negat, 0)
 
         return loss
+
+    def call(self, inputs):
+        """Call Triplet Loss
+        inputs is a list containing the anchor, positive, and
+        negative output tensors from the last layer of the model, respectively
+        adds the triplet loss to the graph
+
+        Returns: the triplet loss tensor"""
+
+        loss = self.triplet_loss(inputs)
+        self.add_loss(loss)
+
+        return loss
