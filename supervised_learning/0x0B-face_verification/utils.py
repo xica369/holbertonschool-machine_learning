@@ -81,6 +81,32 @@ def generate_triplets(images, filenames, triplet_names):
     N is a numpy.ndarray of shape (m, h, w, 3)
     containing the negative images for all m triplets"""
 
-    triplet_images = []
+    indices_A = []
+    indices_P = []
+    indices_N = []
 
-    return triplet_images
+    # remove ".jpg"
+    new_filenames = [filename.split(".")[0] for filename in filenames]
+
+    for triplet_name in triplet_names:
+        for name in triplet_name:
+            if name not in new_filenames:
+                # Reeplace special characters as í, é, ñ
+                new_name = name.encode('utf-8').decode('utf-8')
+                new_name = new_name.replace('eÌ\x81', 'é')
+                new_name = new_name.replace('iÌ\x81', chr(105) + chr(769))
+                new_name = new_name.replace('nÌƒ', chr(110) + chr(771))
+
+                # replace name in triplet_names
+                triplet_name[triplet_name.index(name)] = new_name
+
+        # save image indices
+        indices_A.append(new_filenames.index(triplet_name[0]))
+        indices_P.append(new_filenames.index(triplet_name[1]))
+        indices_N.append(new_filenames.index(triplet_name[2]))
+
+    A = images[indices_A]
+    P = images[indices_P]
+    N = images[indices_N]
+
+    return [A, P, N]
