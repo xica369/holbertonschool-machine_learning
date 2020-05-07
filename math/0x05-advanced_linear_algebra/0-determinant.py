@@ -25,7 +25,7 @@ def determinant(matrix):
     if matrix == [[]]:
         return 1
 
-    if len(matrix[0]) == 1:
+    if len(matrix[0]) == 1 and len(matrix) == 1:
         return matrix[0][0]
 
     return calc_det(matrix)
