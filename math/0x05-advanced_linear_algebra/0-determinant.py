@@ -54,4 +54,5 @@ def calc_det(matrix):
 
         return determinant
     else:
+        # a*d - c*b
         return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
