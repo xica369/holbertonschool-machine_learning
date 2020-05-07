@@ -19,13 +19,14 @@ def determinant(matrix):
         if not isinstance(row, list):
             raise TypeError("matrix must be a list of lists")
 
-    if len(matrix) != len(matrix[0]) and matrix != [[]]:
-        raise ValueError("matrix must be a square matrix")
-
     if matrix == [[]]:
         return 1
 
-    if len(matrix[0]) == 1 and len(matrix) == 1:
+    for row in matrix:
+        if len(matrix) != len(row):
+            raise ValueError("matrix must be a square matrix")
+
+    if len(matrix[0]) == 1:
         return matrix[0][0]
 
     return calc_det(matrix)
