@@ -22,6 +22,9 @@ def inverse(matrix):
         if len(matrix) != len(row):
             raise ValueError("matrix must be a non-empty square matrix")
 
+    if len(matrix[0]) == 1 and matrix[0][0] == 0:
+        return None
+
     if len(matrix[0]) == 1:
         return [[1 / matrix[0][0]]]
 
