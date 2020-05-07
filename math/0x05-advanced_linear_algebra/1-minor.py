@@ -18,9 +18,6 @@ def minor(matrix):
         if not isinstance(row, list):
             raise TypeError("matrix must be a list of lists")
 
-    if len(matrix) == [[]]:
-        raise ValueError("matrix must be a non-empty square matrix")
-
     for row in matrix:
         if len(matrix) != len(row):
             raise ValueError("matrix must be a non-empty square matrix")
