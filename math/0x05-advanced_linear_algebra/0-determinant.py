@@ -29,30 +29,35 @@ def determinant(matrix):
     if len(matrix[0]) == 1:
         return matrix[0][0]
 
-    return calc_det(matrix)
+    # bottom triangle at zero with Gauss method
+    signo = 1
+    for row in range(len(matrix)):
+        # row change when the diagonal element is 0
+        if matrix[row][row] == 0:
+            copy_row = matrix[row]
+            for row2 in range(row + 1, len(matrix)):
+                if matrix[row2][row] != 0:
+                    matrix[row] = matrix[row2]
+                    matrix[row2] = copy_row
+                    signo *= -1
+                    break
 
+        if matrix[row][row] == 0:
+            return 0
 
-def calc_det(matrix):
-    """
-    calculate the determinant of the given matrix
-    """
+        # poner a cero los elementos de la columna
+        for row2 in range(row + 1, len(matrix)):
+            temp = matrix[row2][row] / matrix[row][row]
+            for colum in range(row, len(matrix)):
+                pos1 = matrix[row2][colum]
+                pos2 = temp * matrix[row][colum]
+                matrix[row2][colum] = pos1 - pos2
 
-    if len(matrix) > 2:
-        determinant = 0
-        for pos in range(len(matrix)):
+    # determinant calculation
+    determinant = 1
+    for row in range(len(matrix)):
+        determinant *= matrix[row][row]
 
-            # remove first row
-            sub_matrix = matrix[1:]
+    determinant *= signo
 
-            # remove column from position that are calculating
-            for i in range(len(sub_matrix)):
-                sub_matrix[i] = sub_matrix[i][:pos] + sub_matrix[i][pos + 1:]
-
-            sign = (-1) ** pos
-            # determinante + An * det(sub matrix)
-            determinant += sign * matrix[0][pos] * calc_det(sub_matrix)
-
-        return determinant
-    else:
-        # a*d - c*b
-        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+    return(round(determinant))
