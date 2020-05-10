@@ -30,16 +30,15 @@ class NST:
         alpha - the weight for content cost
         beta - the weight for style cost"""
 
-        lenth = len(style_image.shape)
-        shape = style_image.shape[2]
         message = "style_image must be a numpy.ndarray with shape (h, w, 3)"
-        if not isinstance(style_image, np.ndarray) or lenth != 3 or shape != 3:
+
+        if (not isinstance(style_image, np.ndarray) or
+           len(style_image.shape) != 3 or style_image.shape[2] != 3):
             raise TypeError(message)
 
-        lent = len(content_image.shape)
-        shap = content_image.shape[2]
         message = "content_image must be a numpy.ndarray with shape (h, w, 3)"
-        if not isinstance(content_image, np.ndarray) or lent != 3 or shap != 3:
+        if (not isinstance(content_image, np.ndarray) or
+           len(content_image.shape) != 3 or content_image.shape[2] != 3):
             raise TypeError(message)
 
         if not isinstance(alpha, (int, float, complex)) or alpha < 0:
@@ -64,10 +63,9 @@ class NST:
 
         Returns: the scaled image"""
 
-        lenth = len(image.shape)
-        shape = image.shape[2]
         message = "image must be a numpy.ndarray with shape (h, w, 3)"
-        if not isinstance(image, np.ndarray) or lenth != 3 or shape != 3:
+        if (not isinstance(image, np.ndarray) or len(image.shape) != 3 or
+           image.shape[2] != 3):
             raise TypeError(message)
 
         heith = image.shape[0]
