@@ -42,10 +42,10 @@ class NST:
         if not isinstance(content_image, np.ndarray) or lent != 3 or shap != 3:
             raise TypeError(message)
 
-        if alpha < 0:
+        if not isinstance(alpha, (int, float, complex)) or alpha < 0:
             raise TypeError("alpha must be a non-negative number")
 
-        if beta < 0:
+        if not isinstance(beta, (int, float, complex)) or beta < 0:
             raise TypeError("beta must be a non-negative number")
 
         tf.enable_eager_execution()
@@ -70,16 +70,16 @@ class NST:
         if not isinstance(image, np.ndarray) or lenth != 3 or shape != 3:
             raise TypeError(message)
 
-        h = image.shape[0]
-        w = image.shape[1]
+        heith = image.shape[0]
+        width = image.shape[1]
 
-        if w < h:
+        if width < heith:
             h_new = 512
-            w_new = int(w * h_new / h)
+            w_new = int(width * h_new / heith)
 
         else:
             w_new = 512
-            h_new = int(h * w_new / w)
+            h_new = int(heith * w_new / width)
 
         size = (h_new, w_new)
 
