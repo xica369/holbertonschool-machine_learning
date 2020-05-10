@@ -82,7 +82,7 @@ class NST:
         size = (h_new, w_new)
 
         image = tf.expand_dims(image, axis=0)
-        resize_img = tf.image.resize_bicubic(image, size, align_corners=False)
+        resize_img = tf.image.resize_bicubic(image, size)
 
         scale_image = resize_img / 255
         scale_image = tf.clip_by_value(scale_image,
