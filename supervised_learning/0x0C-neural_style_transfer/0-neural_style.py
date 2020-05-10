@@ -77,18 +77,18 @@ class NST:
             h_new = 512
             w_new = int(width * h_new / heith)
 
-        else:
+        if width >= heith:
             w_new = 512
             h_new = int(heith * w_new / width)
 
         size = (h_new, w_new)
 
         image = tf.expand_dims(image, axis=0)
-        resize_img = tf.image.resize_bicubic(image, size)
+        resize_img = tf.image.resize_bicubic(image, size, align_corners=False)
 
         scale_image = resize_img / 255
         scale_image = tf.clip_by_value(scale_image,
-                                       clip_value_min=0.0,
-                                       clip_value_max=1.0)
+                                       clip_value_min=0,
+                                       clip_value_max=1)
 
         return scale_image
