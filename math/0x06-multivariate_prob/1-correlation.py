@@ -21,6 +21,11 @@ def correlation(C):
     if len(C.shape) != 2 or C.shape[0] != C.shape[1]:
         raise ValueError("C must be a 2D square matrix")
 
-    correlation = np.corrcoef(C)
+    d = C.shape[0]
+    correlation = np.ndarray((d, d))
+
+    for i in range(d):
+        for j in range(d):
+            correlation[i][j] = C[i][j] / np.sqrt(C[i][i] * C[j][j])
 
     return correlation
