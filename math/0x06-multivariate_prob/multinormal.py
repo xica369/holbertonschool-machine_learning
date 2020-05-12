@@ -50,10 +50,10 @@ class MultiNormal:
         """
 
         if not isinstance(x, np.ndarray):
-            raise TypeError("x must by a numpy.ndarray")
+            raise TypeError("x must be a numpy.ndarray")
 
         if len(x.shape) != 2 or x.shape[1] != 1 or x.shape[0] != self.d:
-            raise ValueError("x mush have the shape ({}, 1)".format(self.d))
+            raise ValueError("x must have the shape ({}, 1)".format(self.d))
 
         mean = self.mean
         cov = self.cov
