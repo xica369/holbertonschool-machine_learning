@@ -26,7 +26,7 @@ class MultiNormal:
             raise TypeError("data must be a 2D numpy.ndarray")
 
         if data.shape[1] < 2:
-            raise ValueError("data must contain multiple data points")
+            raise TypeError("data must contain multiple data points")
 
         # Set the public instance variables
 
@@ -53,7 +53,7 @@ class MultiNormal:
             raise TypeError("x must by a numpy.ndarray")
 
         if len(x.shape) != 2 or x.shape[1] != 1 or x.shape[0] != self.d:
-            raise ValueError("x mush have the shape ({d}, 1)")
+            raise ValueError("x mush have the shape ({}, 1)".format(self.d))
 
         mean = self.mean
         cov = self.cov
