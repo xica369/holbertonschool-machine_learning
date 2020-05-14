@@ -18,22 +18,12 @@ def pca(X, ndim):
     T numpy.ndarray of shape (n,ndim) with the transformed version of X
     """
 
-    n, d = X.shape
-
-    # calcular matriz covarianza
     mean = np.mean(X, axis=0)
     X = X - mean
-    C = np.dot(X.T, X) / (X.shape[0] - 1)
 
-    # obtener valores y vectores propios
-    vals, vects = np.linalg.eig(C)
+    U, sigm, V = np.linalg.svd(X)
+    W = V[:ndim].T
 
-    # ordena vals y vects en forma descendente
-    idx = np.argsort(vals)[::-1]
-    vals = vals[idx]
-    vects = vects[:, idx]
+    T = np.dot(X, W)
 
-    vects = -1 * vects[:, :ndim]
-    T = np.dot(X, vects)
-
-    return T.astype("float64")
+    return T
