@@ -20,29 +20,8 @@ def pca(X, var=0.95):
     of the transformed X
     """
 
-    n, d = X.shape
+    U, sigm, V = np.linalg.svd(X)
+    aculum_var = np.cumsum(sigm) / np.sum(sigm)
+    r = np.argwhere(aculum_var >= var)[0, 0]
 
-    mean = np.mean(X, axis=0)
-    X = X - mean
-    cov = np.dot(X.T, X) / (n - 1)
-
-    vals, vects = np.linalg.eig(cov)
-
-    idx = np.argsort(vals)[::-1]
-    vals = vals[idx]
-    vects = vects[:, idx]
-    vects *= -1
-
-    sum_vals = np.sum(vals)
-
-    # retention of the information per eigen value
-    var_retention = vals / sum_vals
-    acum_variance = np.cumsum(var_retention)
-
-    r = 0
-    for acum_var in acum_variance:
-        r += 1
-        if acum_var > var:
-            break
-
-    return vects[:, :r]
+    return V[:r + 1].T
