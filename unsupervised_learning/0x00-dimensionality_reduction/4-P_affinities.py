@@ -5,7 +5,6 @@
 import numpy as np
 P_init = __import__('2-P_init').P_init
 HP = __import__('3-entropy').HP
-global betas
 
 
 def P_affinities(X, tol=1e-5, perplexity=30.0):
@@ -29,18 +28,18 @@ def P_affinities(X, tol=1e-5, perplexity=30.0):
 
     for iter in range(n):
         x = D[iter]
-        prob = search_beta(x, iter, perplexity, tol, D)
+        prob = search_beta(x, iter, perplexity, tol, D, betas)
         P[iter] = prob
     return P
 
 
-def search_beta(x, iter, perplexity, tol, D):
+def search_beta(x, iter, perplexity, tol, D, betas):
     """ search beta with binary search"""
 
     beta_min, beta_max = 0, np.inf
-    Hi, Pi[iter, 1:] = HP(D[iter, 1:], betas[iter])
+    Hi, Pi = HP(D[iter, 1:], betas[iter])
     perp = 2 ** Hi
-    perp_diff = perplexity - per
+    perp_diff = perplexity - perp
     times = 0
     hit_upper_limit = False
 
@@ -56,7 +55,7 @@ def search_beta(x, iter, perplexity, tol, D):
             beta_max = betas[iter]
             betas[iter] = (beta_min + beta_max) / 2
             hit_upper_minit = True
-        Hi, Pi[iter, 1:] = HP(D[iter, 1:], betas[iter])
+        Hi, Pi = HP(D[iter, 1:], betas[iter])
         perp = 2 * Hi
         perp_diff = perplexity - perp
         times = times + 1
