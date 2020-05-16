@@ -33,7 +33,7 @@ def likelihood(x, n, P):
     if not isinstance(P, np.ndarray) or len(P.shape) != 1 or P.shape[0] < 1:
         raise TypeError("P must be a 1D numpy.ndarray")
 
-    if np.all(P > 1) and np.all(P < 0):
+    if np.any(P > 1) or np.any(P < 0):
         raise ValueError("All values in P must be in the range [0, 1]")
 
     """l(P|x, n) = (n x) * P^x * (1 - P)^(n - x)"""
