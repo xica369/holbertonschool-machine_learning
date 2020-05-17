@@ -1,21 +1,17 @@
 #!/usr/bin/env python3
 
-"""
-Create a class NST that performs tasks for neural style transfer
-"""
+"""Create a class NST that performs tasks for neural style transfer"""
 
 import tensorflow as tf
 import numpy as np
 
 
 class NST:
-    """
-    class NST
+    """class NST
     Public class attributes:
     style_layers = ['block1_conv1','block2_conv1', 'block3_conv1',
     'block4_conv1', 'block5_conv1']
-    content_layer = 'block5_conv2'
-    """
+    content_layer = 'block5_conv2'"""
 
     style_layers = ['block1_conv1',
                     'block2_conv1',
@@ -57,6 +53,8 @@ class NST:
         self.content_image = self.scale_image(content_image)
         self.alpha = alpha
         self.beta = beta
+        self.load_model()
+        self.model = model
 
     @staticmethod
     def scale_image(image):
@@ -94,3 +92,35 @@ class NST:
                                        clip_value_max=1)
 
         return scale_image
+
+    def load_model(self):
+        """
+        model used to calculate cost
+        """
+
+        # load model vgg without classifier
+        vgg = tf.keras.applications.VGG19(include_top=False,)
+
+        # replacing max pool by average pool
+        vgg.save("base_model")
+        custom_objects = {"MaxPooling2D": tf.keras.layers.AveragePooling2D}
+        vgg = tf.keras.models.load_model("base_model",
+                                         custom_objects=custom_objects)
+
+        # save outputs of the VGG19 layers - style and content
+        style_list = []
+        content_list = []
+
+        for layer in vgg.layers:
+            layer.trainable = False
+            if layer.name in self.content_layer:
+                content_list.append(layer.output)
+            if layer.name in self.style_layers:
+                style_list.append(layer.output)
+
+        model_outputs = style_list + content_list
+
+        global model
+
+        # Create model
+        model = tf.keras.models.Model(vgg.input, model_outputs)
