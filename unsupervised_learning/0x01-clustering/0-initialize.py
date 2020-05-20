@@ -18,3 +18,20 @@ import numpy as np
 
 def initialize(X, k):
     """Initialize K-means"""
+
+    try:
+        d = X.shape[1]
+
+        # minimum values of X along each dimension in d
+        low = np.amin(X, 0)
+
+        # maximum values of X along each dimension in d
+        high = np.amax(X, 0)
+
+        # initialize with a multivariate uniform distribution
+        initialization = np.random.uniform(low=low, high=high, size=(k, d))
+
+    except Exception:
+        return None
+
+    return initialization
