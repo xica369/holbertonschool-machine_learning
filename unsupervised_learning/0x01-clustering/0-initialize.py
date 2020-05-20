@@ -19,6 +19,9 @@ import numpy as np
 def initialize(X, k):
     """Initialize K-means"""
 
+    if not isinstance(k, int) or k < 1:
+        return None
+
     try:
         d = X.shape[1]
 
