@@ -22,6 +22,12 @@ def variance(X, C):
         if X.shape[1] != C.shape[1]:
             return None
 
+        if C.shape[0] > X.shape[0]:
+            return None
+
+        if X.ndim != 2 or C.ndim != 2:
+            return None
+
         distances = np.sqrt(np.sum(pow((X - C[:, np.newaxis]), 2), -1))
         min_distance = np.min(distances, axis=0)
         var = pow(min_distance, 2).sum()
