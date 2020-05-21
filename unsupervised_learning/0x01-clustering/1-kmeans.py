@@ -25,7 +25,7 @@ def kmeans(X, k, iterations=1000):
     C = initialize(X, k)
 
     if not isinstance(iterations, int) or iterations < 1:
-        return None
+        return None, None
 
     try:
         d = X.shape[1]
@@ -58,7 +58,7 @@ def kmeans(X, k, iterations=1000):
             c_temp = C.copy()
 
     except Exception:
-        return None
+        return None, None
 
     return C, clss
 
@@ -67,7 +67,7 @@ def initialize(X, k):
     """Initialize K-means"""
 
     if not isinstance(k, int) or k < 1:
-        return None
+        return None, None
 
     try:
         d = X.shape[1]
@@ -82,6 +82,6 @@ def initialize(X, k):
         initialization = np.random.uniform(low=low, high=high, size=(k, d))
 
     except Exception:
-        return None
+        return None, None
 
     return initialization

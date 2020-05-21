@@ -27,16 +27,16 @@ def optimum_k(X, kmin=1, kmax=None, iterations=1000):
 
     try:
         if not isinstance(kmin, int) or kmin < 1:
-            return None
+            return None, None
 
-        if not isinstance(kmax, int) or kmax < kmin:
-            return None
+        if not isinstance(kmax, int) or kmax <= kmin:
+            return None, None
 
         if X.shape[0] < kmin or X.shape[0] < kmax:
-            return None
+            return None, None
 
         if X.ndim != 2:
-            return None
+            return None, None
 
         results = []
         d_vars = []
@@ -51,6 +51,6 @@ def optimum_k(X, kmin=1, kmax=None, iterations=1000):
             d_vars.append(smallest_var - var)
 
     except Exception:
-        return None
+        return None, None
 
     return results, d_vars
