@@ -24,3 +24,33 @@ variance = __import__('2-variance').variance
 
 def optimum_k(X, kmin=1, kmax=None, iterations=1000):
     """Optimize k"""
+
+    try:
+        if not isinstance(kmin, int) or kmin < 1:
+            return None
+
+        if not isinstance(kmax, int) or kmax < kmin:
+            return None
+
+        if X.shape[0] < kmin or X.shape[0] < kmax:
+            return None
+
+        if X.ndim != 2:
+            return None
+
+        results = []
+        d_vars = []
+        C, clss = kmeans(X, kmin, iterations)
+        smallest_var = variance(X, C)
+
+        for k in range(kmin, kmax + 1, 1):
+            C, clss = kmeans(X, k, iterations)
+            results.append((C, clss))
+
+            var = variance(X, C)
+            d_vars.append(smallest_var - var)
+
+    except Exception:
+        return None
+
+    return results, d_vars

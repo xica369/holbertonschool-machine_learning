@@ -22,10 +22,13 @@ def variance(X, C):
         if X.shape[1] != C.shape[1]:
             return None
 
-        if C.shape[0] > X.shape[0]:
+        if C.shape[0] > X.shape[0] or C.shape[0] < 1:
             return None
 
         if X.ndim != 2 or C.ndim != 2:
+            return None
+
+        if X.shape[1] < 1 or C.shape[1] < 1:
             return None
 
         distances = np.sqrt(np.sum(pow((X - C[:, np.newaxis]), 2), -1))
