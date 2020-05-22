@@ -22,8 +22,7 @@ pdf = __import__('5-pdf').pdf
 def expectation(X, pi, m, S):
     """Expectation"""
 
-    a = 1
-    if a == 1:
+    try:
         n, d = X.shape
         k = pi.shape[0]
 
@@ -42,9 +41,6 @@ def expectation(X, pi, m, S):
         if S.shape != (k, d, d):
             return None, None
 
-        if not np.isclose(np.sum(pi), 1):
-            return None, None
-
         g = np.zeros((k, n))
 
         for ki in range(k):
@@ -56,4 +52,7 @@ def expectation(X, pi, m, S):
         lk = np.sum(log)
         g /= sum_g
 
-        return g, lk
+    except Exception:
+        return None, None
+
+    return g, lk
