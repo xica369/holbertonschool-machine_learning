@@ -22,7 +22,7 @@ def variance(X, C):
         if X.shape[1] != C.shape[1]:
             return None
 
-        if C.shape[0] > X.shape[0] or C.shape[0] < 1:
+        if C.shape[0] > X.shape[0] or C.shape[0] < 1 or X.shape[0] < 1:
             return None
 
         if X.ndim != 2 or C.ndim != 2:

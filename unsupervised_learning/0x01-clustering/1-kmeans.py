@@ -22,12 +22,12 @@ import numpy as np
 def kmeans(X, k, iterations=1000):
     """K-means"""
 
-    C = initialize(X, k)
-
-    if not isinstance(iterations, int) or iterations < 1:
-        return None, None
-
     try:
+        C = initialize(X, k)
+
+        if not isinstance(iterations, int) or iterations < 1:
+            return None, None
+
         d = X.shape[1]
         low = np.amin(X, axis=0)
         high = np.amax(X, axis=0)
@@ -66,10 +66,19 @@ def kmeans(X, k, iterations=1000):
 def initialize(X, k):
     """Initialize K-means"""
 
-    if not isinstance(k, int) or k < 1:
-        return None, None
-
     try:
+        if not isinstance(k, int) or k < 1:
+            return None, None
+
+        if X.ndim != 2:
+            return None, None
+
+        if X.shape[0] < 1 or X.shape[1] < 1:
+            return None, None
+
+        if k > X.shape[0]:
+            return None, None
+
         d = X.shape[1]
 
         # minimum values of X along each dimension in d
