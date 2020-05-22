@@ -22,8 +22,7 @@ kmeans = __import__('1-kmeans').kmeans
 def initialize(X, k):
     """Initialize GMM"""
 
-    a = 1
-    if a == 1:
+    try:
         if X.ndim != 2:
             return None, None, None
 
@@ -39,4 +38,7 @@ def initialize(X, k):
         d = X.shape[1]
         S = np.broadcast_to(np.eye(d), (k, d, d))
 
-        return pi, m, S
+    except Exception:
+        return None, None, None
+
+    return pi, m, S
