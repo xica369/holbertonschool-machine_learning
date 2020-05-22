@@ -21,3 +21,22 @@ kmeans = __import__('1-kmeans').kmeans
 
 def initialize(X, k):
     """Initialize GMM"""
+
+    a = 1
+    if a == 1:
+        if X.ndim != 2:
+            return None, None, None
+
+        if not isinstance(k, int) or k < 1:
+            return None, None, None
+
+        m, clss = kmeans(X, k)
+
+        if m is None:
+            return None, None, None
+
+        pi = np.full(shape=(k,), fill_value=1/k)
+        d = X.shape[1]
+        S = np.broadcast_to(np.eye(d), (k, d, d))
+
+        return pi, m, S
