@@ -20,3 +20,25 @@ import numpy as np
 
 def maximization(X, g):
     """Maximization"""
+
+    try:
+        n, d = X.shape
+        k = g.shape[0]
+
+        if X.ndim != 2 or g.ndim != 2:
+            return None, None, None
+
+        if n < 1 or d < 1 or k < 1 or n < k:
+            return None, None, None
+
+        if g.shape[1] != n:
+            return None, None, None
+
+        pi = np.zeros((k,))
+        m = np.zeros((k, d))
+        S = np.zeros((k, d, d))
+
+    except Exception:
+        return None, None, None
+
+    return pi, m, S
