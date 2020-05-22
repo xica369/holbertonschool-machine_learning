@@ -41,6 +41,9 @@ def expectation(X, pi, m, S):
         if S.shape != (k, d, d):
             return None, None
 
+        if not np.isclose(np.sum(pi), 1):
+            return None, None
+
         g = np.zeros((k, n))
 
         for ki in range(k):
