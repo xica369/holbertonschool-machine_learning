@@ -19,7 +19,7 @@ import numpy as np
 
 
 def maximization(X, g):
-    """Maximization"""
+    """Calculate Maximization"""
 
     try:
         n, d = X.shape
@@ -32,6 +32,9 @@ def maximization(X, g):
             return None, None, None
 
         if g.shape[1] != n:
+            return None, None, None
+
+        if not np.isclose(np.sum(g, axis=0), 1).all():
             return None, None, None
 
         pi = np.zeros((k,))
