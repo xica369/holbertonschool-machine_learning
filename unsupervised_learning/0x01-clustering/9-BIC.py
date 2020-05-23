@@ -35,9 +35,59 @@ l is the log likelihood of the model
 """
 
 import numpy as np
-expectation_maximization = __import__('7-EM').expectation_maximization
+expectation_maximization = __import__('8-EM').expectation_maximization
 
 
 def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     """finds the best number of clusters for a GMM using the Bayesian
     Information Criterion"""
+
+    try:
+        n, d = X.shape
+
+        if X.ndim != 2:
+            return None, None, None, None
+
+        if n < 1 or d < 1:
+            return None, None, None, None
+
+        if not isinstance(kmin, int) or kmin < 0:
+            return None, None, None, None
+
+        if not isinstance(kmax, int) or kmax < kmin:
+            return None, None, None, None
+
+        if not isinstance(iterations, int) or iterations < 1:
+            return None, None, None, None
+
+        if not isinstance(tol, float) or tol < 0:
+            return None, None, None, None
+
+        if not isinstance(verbose, bool):
+            return None, None, None, None
+
+        k_results = []
+        results = []
+        likehood_total = []
+        bics = []
+
+        for ki in range(kmin, kmax + 1, 1):
+            pi, m, S, g, lk = expectation_maximization(X, ki, iterations, tol,
+                                                       verbose)
+
+            k_results.append(ki)
+            results.append((pi, m, S))
+            likehood_total.append(lk)
+            bic = ((ki*d * (d+1) / 2) + (d*ki) + ki - 1) * np.log(n) - 2*lk
+            bics.append(bic)
+
+        b = np.asarray(bics)
+        lk = np.asarray(likehood_total)
+        best = np.argmin(b)
+        best_k = k_results[best]
+        best_result = results[best]
+
+    except Exception:
+        return None, None, None, None
+
+    return best_k, best_result, lk, b
