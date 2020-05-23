@@ -36,3 +36,49 @@ maximization = __import__('7-maximization').maximization
 
 def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     """EM: function that performs the expectation maximization for a GMM"""
+
+    try:
+        if X.ndim != 2:
+            return None, None, None, None, None
+
+        if X.shape[0] < 1 or X.shape[1] < 1:
+            return None, None, None, None, None
+
+        if not isinstance(k, int) or k < 1:
+            return None, None, None, None, None
+
+        if not isinstance(iterations, int) or iterations < 1:
+            return None, None, None, None, None
+
+        if not isinstance(tol, float) or tol < 0:
+            return None, None, None, None, None
+
+        if not isinstance(verbose, bool):
+            return None, None, None, None, None
+
+        pi, m, S = initialize(X, k)
+
+        if pi is None or m is None or S is None:
+            return None, None, None, None, None
+
+        temp = 0
+        for iter in range(iterations):
+
+            g, lk = expectation(X, pi, m, S)
+            pi, m, S = maximization(X, g)
+
+            if verbose:
+                if (iter % 10 == 0 or iter == iterations-1 or
+                   abs(lk - temp) <= tol):
+                    message = "Log Likelihood after {} iterations: {}"
+                    print(message.format(iter, lk))
+
+            if abs(lk - temp) <= tol:
+                break
+
+            temp = lk
+
+    except Exception:
+        return None, None, None, None, None
+
+    return pi, m, S, g, lk
