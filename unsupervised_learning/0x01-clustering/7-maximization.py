@@ -38,6 +38,12 @@ def maximization(X, g):
         m = np.zeros((k, d))
         S = np.zeros((k, d, d))
 
+        for ki in range(k):
+            Nk = np.sum(g[ki])
+            pi[ki] = Nk / n
+            m[ki] = np.matmul(g[ki].reshape(1, n), X).sum(axis=0) / Nk
+            S[ki] = np.matmul(g[ki] * (X - m[ki]).T, (X - m[ki])) / Nk
+
     except Exception:
         return None, None, None
 
