@@ -103,6 +103,6 @@ def posterior(x, n, p1, p2):
     if p2 <= p1:
         raise ValueError("p2 must be greater than p1")
 
-    P = x / n
+    Pr = x / n
 
-    return P
+    return Pr
