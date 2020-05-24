@@ -53,7 +53,7 @@ def kmeans(X, k, iterations=1000):
             if (c_temp == C).all():
                 return C, clss
 
-                c_temp = C.copy()
+            c_temp = C.copy()
 
     except Exception:
         return None, None
