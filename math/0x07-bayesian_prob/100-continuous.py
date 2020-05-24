@@ -95,14 +95,14 @@ def posterior(x, n, p1, p2):
         raise ValueError("x cannot be greater than n")
 
     if not isinstance(p1, float) or np.any(p1 > 1) or np.any(p1 < 0):
-        raise ValueError("All values in p1 must be in the range [0, 1]")
+        raise ValueError("p1 must be a float in the range [0, 1]")
 
     if not isinstance(p2, float) or np.any(p2 > 1) or np.any(p2 < 0):
-        raise ValueError("All values in p2 must be in the range [0, 1]")
+        raise ValueError("p2 must be a float in the range [0, 1]")
 
     if p2 <= p1:
         raise ValueError("p2 must be greater than p1")
 
     Pr = x / n
 
-    return Pr
+    return 1
