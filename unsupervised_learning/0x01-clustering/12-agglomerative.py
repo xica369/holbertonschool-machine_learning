@@ -18,3 +18,7 @@ import matplotlib.pyplot as plt
 
 def agglomerative(X, dist):
     """Agglomerative"""
+
+    z = scipy.cluster.hierarchy.linkage(X, "ward", metric="euclidean")
+    dn = scipy.cluster.hierarchy.dendrogram(z)
+    plt.show()
