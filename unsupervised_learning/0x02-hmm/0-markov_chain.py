@@ -23,12 +23,7 @@ def markov_chain(P, s, t=1):
     Markov Chain
     """
 
-<<<<<<< HEAD
-    a = 1
-    if a == 1:
-=======
     try:
->>>>>>> fc63515541302476835d7357331cb828cf374a39
         n = P.shape[0]
         if P.shape != (n, n):
             return None
@@ -36,24 +31,15 @@ def markov_chain(P, s, t=1):
         if s.shape != (1, n):
             return None
 
-<<<<<<< HEAD
         if not isinstance(t, int) or t < 1:
-=======
-        if not isinstance(t, int):
->>>>>>> fc63515541302476835d7357331cb828cf374a39
             return None
 
         if not np.isclose(np.sum(P, axis=1), 1).all():
             return None
 
-<<<<<<< HEAD
         if np.all(P <= 0):
             return None
 
-        S = np.dot(s, np.linalg.matrix_power(P, t))
-
-        return S
-=======
         # s * P^t
         S = np.dot(s, np.linalg.matrix_power(P, t))
 
@@ -61,4 +47,3 @@ def markov_chain(P, s, t=1):
 
     except Exception:
         return None
->>>>>>> fc63515541302476835d7357331cb828cf374a39
