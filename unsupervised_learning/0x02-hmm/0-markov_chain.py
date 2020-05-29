@@ -23,8 +23,7 @@ def markov_chain(P, s, t=1):
     Markov Chain
     """
 
-    a = 1
-    if a == 1:
+    try:
         n = P.shape[0]
         if P.shape != (n, n):
             return None
@@ -41,6 +40,10 @@ def markov_chain(P, s, t=1):
         if np.all(P <= 0):
             return None
 
+        # s * P^t
         S = np.dot(s, np.linalg.matrix_power(P, t))
 
         return S
+
+    except Exception:
+        return None
