@@ -23,7 +23,7 @@ def regular(P):
     try:
         n = P.shape[0]
 
-        if P.shape != (n, n):
+        if P.shape != (n, n) or n < 1:
             return None
 
         if not np.isclose(np.sum(P, axis=1), 1).all():

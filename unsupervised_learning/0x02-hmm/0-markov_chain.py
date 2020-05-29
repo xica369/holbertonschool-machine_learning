@@ -40,6 +40,9 @@ def markov_chain(P, s, t=1):
         if np.all(P <= 0):
             return None
 
+        if n < 1:
+            return None
+
         # s * P^t
         S = np.dot(s, np.linalg.matrix_power(P, t))
 
