@@ -19,7 +19,8 @@ Returns: the converged Transition, Emission, or None, None on failure
 import numpy as np
 
 
-def baum_welch(Observations, N, M, Transition=None, Emission=None, Initial=None):
+def baum_welch(Observations, N, M, Transition=None, Emission=None,
+               Initial=None):
     """
     The Baum-Welch Algorithm
     """

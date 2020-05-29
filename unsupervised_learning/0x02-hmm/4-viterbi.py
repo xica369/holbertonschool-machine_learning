@@ -20,7 +20,8 @@ Initial a numpy.ndarray of shape (N, 1) containing the probability of starting
 in a particular hidden state
 
 Returns: path, P, or None, None on failure
-path is the a list of length T containing the most likely sequence of hidden states
+path is the a list of length T containing the most likely sequence of hidden
+states
 P is the probability of obtaining the path sequence
 """
 
