@@ -38,8 +38,12 @@ def absorbing(P):
         if np.all(diag != 1):
             return False
 
-        # check if there are two group of nodes that are not connecting
+        cont1 = 0
+        cont2 = 0
+
         for pos in range(n):
+
+            # check if there are two group of nodes that are not connecting
             rows = P[:pos + 1, pos + 1:]
             columns = P[pos + 1:, :pos + 1]
             if pos == n - 1:
@@ -48,10 +52,7 @@ def absorbing(P):
             if np.all(rows == 0) and np.all(columns == 0):
                 return False
 
-        # check if all absorbent nodes only connect with themselves
-        cont1 = 0
-        cont2 = 0
-        for pos in range(n):
+            # check if all absorbent nodes only connect with themselves
             col = P[:pos, pos]
             _col = P[pos + 1:, pos]
             index = P[pos][pos]
