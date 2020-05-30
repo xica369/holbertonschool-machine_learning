@@ -40,12 +40,12 @@ def absorbing(P):
 
         # check if there are two group of nodes that are not connecting
         for pos in range(n):
-            e = P[:pos + 1, pos + 1:]
-            f = P[pos + 1:, :pos + 1]
+            rows = P[:pos + 1, pos + 1:]
+            columns = P[pos + 1:, :pos + 1]
             if pos == n - 1:
-                e = P[n - 1, : n]
-                f = P[: n, n - 1]
-            if np.all(e == 0) and np.all(f == 0):
+                rows = P[n - 1, : n]
+                columns = P[: n, n - 1]
+            if np.all(rows == 0) and np.all(columns == 0):
                 return False
 
         # check if all absorbent nodes only connect with themselves
