@@ -24,3 +24,18 @@ def baum_welch(Observations, N, M, Transition=None, Emission=None,
     """
     The Baum-Welch Algorithm
     """
+
+    try:
+        if Observation.ndim != 1:
+            return None, None
+
+        if not isinstance(N, int) or N < 1:
+            return None, None
+
+        if not isinstance(M, int) or M < 1:
+            return None, None
+
+        # if Emission is None:
+
+    except Exception:
+        return None, None
