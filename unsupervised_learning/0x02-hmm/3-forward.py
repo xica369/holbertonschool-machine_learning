@@ -29,3 +29,32 @@ def forward(Observation, Emission, Transition, Initial):
     """
     The Forward Algorithm
     """
+
+    try:
+        N = Emission.shape[0]
+
+        if Observation.ndim != 1:
+            return None, None
+
+        if Emission.ndim != 2:
+            return None, None
+
+        if Transition.shape != (N, N):
+            return None, None
+
+        if Initial.shape != (N, 1):
+            return None, None
+
+        if not np.isclose(np.sum(Emission, axis=1), 1).all():
+            return None, None
+
+        if not np.isclose(np.sum(Transition, axis=1), 1).all():
+            return None, None
+
+        if not np.isclose(np.sum(Initial, axis=0), 1).all():
+            return None, None
+
+        return 1, 1
+
+    except Exception:
+        return None, None
