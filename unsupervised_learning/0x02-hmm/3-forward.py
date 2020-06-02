@@ -54,7 +54,18 @@ def forward(Observation, Emission, Transition, Initial):
         if not np.isclose(np.sum(Initial, axis=0), 1).all():
             return None, None
 
-        return 1, 1
+        T = Observation.shape[0]
+        F = np.zeros((N, T))
+
+        for idx, obs in enumerate(Observation):
+            F[:, idx] = np.dot(F[:, idx-1], Transition[:, :])*Emission[:, obs]
+
+            if idx == 0:
+                F[:, idx] = Initial.T * Emission[:, obs]
+
+        P = np.sum(F[:, -1])
+
+        return P, F
 
     except Exception:
         return None, None
