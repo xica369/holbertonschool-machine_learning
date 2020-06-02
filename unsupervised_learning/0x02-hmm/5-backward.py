@@ -57,7 +57,18 @@ def backward(Observation, Emission, Transition, Initial):
         if not np.isclose(np.sum(Initial, axis=0), 1).all():
             return None, None
 
-        return 1, 1
+        T = Observation.shape[0]
+        B = np.ones((N, T))
+
+        for obs in reversed(range(T-1)):
+            for h_state in range(N):
+                B[h_state, obs] = (np.sum(B[:, obs + 1] *
+                                          Transition[h_state, :] *
+                                          Emission[:, Observation[obs + 1]]))
+
+        P = np.sum(Initial.T * Emission[:, Observation[0]] * B[:, 0])
+
+        return P, B
 
     except Exception:
         return None, None
