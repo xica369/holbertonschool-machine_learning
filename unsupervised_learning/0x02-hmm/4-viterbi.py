@@ -57,7 +57,32 @@ def viterbi(Observation, Emission, Transition, Initial):
         if not np.isclose(np.sum(Initial, axis=0), 1).all():
             return None, None
 
-        return 1, 1
+        T = Observation.shape[0]
+        F = np.zeros((N, T))
+        prev = np.zeros((N, T))
+
+        # Initilaize the tracking tables from first observation
+        F[:, 0] = Initial.T * Emission[:, Observation[0]]
+        prev[:, 0] = 0
+
+        # Iterate throught the observations updating the tracking tables
+        for idx, obs in enumerate(Observation):
+            if idx != 0:
+                F[:, idx] = np.max(F[:, idx - 1] * Transition.T *
+                                   Emission[np.newaxis, :, obs].T, 1)
+                prev[:, idx] = np.argmax(F[:, idx - 1] * Transition.T, 1)
+
+        # Build the output, optimal model trajectory (path)
+        path = T * [1]
+        path[-1] = np.argmax(F[:, T - 1])
+        for idx in reversed(range(1, T)):
+            path[idx - 1] = int(prev[path[idx], idx])
+
+        # calculate the probability of obtaining the path sequence
+        P = np.amax(F, axis=0)
+        P = np.amin(P)
+
+        return path, P
 
     except Exception:
         return None, None
