@@ -35,7 +35,32 @@ def baum_welch(Observations, N, M, Transition=None, Emission=None,
         if not isinstance(M, int) or M < 1:
             return None, None
 
-        # if Emission is None:
+        if Transition is None:
+            Transition = np.ones((N, N)) / N
+
+        if Emission is None:
+            Emission = np.ones((N, M)) / M
+
+        if Initial is None:
+            Initial = np.ones((N, 1)) / N
+
+        if not np.isclose(np.sum(Emission, axis=1), 1).all():
+            return None, None
+
+        if not np.isclose(np.sum(Transition, axis=1), 1).all():
+            return None, None
+
+        if not np.isclose(np.sum(Initial, axis=0), 1).all():
+            return None, None
+
+        if Emission.shape != (N, M):
+            return None, None
+
+        if Transition.shape != (N, N):
+            return None, None
+
+        if Initial.shape != (N, 1):
+            return None, None
 
     except Exception:
         return None, None
