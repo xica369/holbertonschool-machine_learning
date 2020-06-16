@@ -135,5 +135,14 @@ class NST:
         of input_layer
         """
 
-        if not isinstance(input_layer, (tf.Tensor, tf.Variable)):
+        if (not isinstance(input_layer, (tf.Tensor, tf.Variable)) or
+            input_layer.ndim != 4):
             raise TypeError("input_layer must be a tensor of rank 4")
+
+        channels = input_layer.shape[3]
+        a = tf.reshape(input_layer, shape=[-1, channels])
+        print(a)
+        print(type(a))
+
+        a = tf.reshape(input_layer, shape=[-1, channels])
+        print(a)
