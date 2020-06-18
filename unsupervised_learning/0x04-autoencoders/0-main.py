@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
 from tensorflow.keras.datasets import mnist
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
 
 autoencoder = __import__('0-vanilla').autoencoder
 

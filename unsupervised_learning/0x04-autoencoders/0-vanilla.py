@@ -22,3 +22,26 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
     decoder is the decoder model
     auto is the full autoencoder model
     """
+
+    X_encoder = K.Input(shape=(input_dims, ))
+    X_decoder = K.Input(shape=(latent_dims, ))
+
+    input = X_encoder
+    for hidden_layer in hidden_layers:
+        input = K.layers.Dense(hidden_layer, activation="relu")(input)
+
+    h = K.layers.Dense(latent_dims, activation="relu")(input)
+
+    input = X_decoder
+    for hidden_layer in reversed(hidden_layers):
+        input = K.layers.Dense(hidden_layer, activation="relu")(input)
+
+    output = K.layers.Dense(input_dims, activation="sigmoid")(input)
+
+    encoder = K.models.Model(inputs=X_encoder, outputs=h)
+    decoder = K.models.Model(inputs=X_decoder, outputs=output)
+    auto = K.models.Model(inputs=X_encoder, outputs=output)
+
+    auto.compile(optimizer="Adam", loss="binary_crossentropy")
+
+    return encoder, decoder, auto
