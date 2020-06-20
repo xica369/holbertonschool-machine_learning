@@ -23,25 +23,48 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
     auto is the full autoencoder model
     """
 
-    X_encoder = K.Input(shape=(input_dims, ))
-    X_decoder = K.Input(shape=(latent_dims, ))
+    # ========= ENCODER =========
 
+    # create a placeholder to encoder
+    X_encoder = K.Input(shape=(input_dims, ))
     input = X_encoder
+
+    # create encoder's hidden layers
     for hidden_layer in hidden_layers:
         input = K.layers.Dense(hidden_layer, activation="relu")(input)
 
+    # latent space representation
     h = K.layers.Dense(latent_dims, activation="relu")(input)
 
+    # create the encoder model
+    encoder = K.models.Model(inputs=X_encoder, outputs=h)
+
+    # ========= DECODER =========
+
+    # create a placeholder to decoder
+    X_decoder = K.Input(shape=(latent_dims, ))
     input = X_decoder
+
+    # create decoder's hidden layers
     for hidden_layer in reversed(hidden_layers):
         input = K.layers.Dense(hidden_layer, activation="relu")(input)
 
     output = K.layers.Dense(input_dims, activation="sigmoid")(input)
 
-    encoder = K.models.Model(inputs=X_encoder, outputs=h)
+    # create the decoder model
     decoder = K.models.Model(inputs=X_decoder, outputs=output)
-    auto = K.models.Model(inputs=X_encoder, outputs=output)
 
+    # ========= AUTOENCODER =========
+
+    # create a placeholder to autoencoder
+    X_auto = K.Input(shape=(input_dims, ))
+
+    # get outputs of decoder to build the autoencoder model
+    h = encoder(X_auto)
+    Y = decoder(h)
+
+    # create the autoencoder model and compile
+    auto = K.models.Model(inputs=X_auto, outputs=Y)
     auto.compile(optimizer="Adam", loss="binary_crossentropy")
 
     return encoder, decoder, auto

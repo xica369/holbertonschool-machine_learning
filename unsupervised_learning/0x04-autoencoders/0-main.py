@@ -23,9 +23,9 @@ reconstructed = decoder.predict(encoded)
 
 for i in range(10):
     ax = plt.subplot(2, 10, i + 1)
-    ax.axes('off')
+    ax.axis('off')
     plt.imshow(x_test[i].reshape((28, 28)))
     ax = plt.subplot(2, 10, i + 11)
-    ax.axes('off')
+    ax.axis('off')
     plt.imshow(reconstructed[i].reshape((28, 28)))
-    plt.show()
+plt.show()
