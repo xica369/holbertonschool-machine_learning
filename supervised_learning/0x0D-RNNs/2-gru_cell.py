@@ -54,13 +54,21 @@ class GRUCell:
         """
 
         Wcx = np.concatenate((h_prev, x_t), axis=1)
+
+        # Gu = sigmoide(Wz[h_prev, x_t] + bz)
         Gu = self.sigmoide(np.dot(Wcx, self.Wz) + self.bz)
+
+        # Gr = sigmoide(Wr[h_prev, x_t] + br)
         Gr = self.sigmoide(np.dot(Wcx, self.Wr) + self.br)
 
         Wcx = np.concatenate(((h_prev * Gr), x_t), axis=1)
+
+        # C_hat = tanh(Wh[Gr * h_prev, x_t] + bh)
         C_hat = np.tanh(np.dot(Wcx, self.Wh) + self.bh)
+
         h_next = Gu * C_hat + (1 - Gu) * h_prev
 
+        # y = softmax(Wy * h_t + by)
         y = self.softmax(np.dot(h_next, self.Wy) + self.by)
 
         return h_next, y
