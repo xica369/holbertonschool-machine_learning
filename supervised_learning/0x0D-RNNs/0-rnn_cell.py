@@ -8,6 +8,8 @@ import numpy as np
 
 
 class RNNCell:
+    """class RNNCell"""
+
     def __init__(self, i, h, o):
         """
         i is the dimensionality of the data
