@@ -32,7 +32,7 @@ class GRUCell:
         self.Wh = np.random.normal(size=(i+h, h))
         self.Wy = np.random.normal(size=(h, o))
 
-        # bias
+        # biases
         self.bz = np.zeros((1, h))
         self.br = np.zeros((1, h))
         self.bh = np.zeros((1, h))
