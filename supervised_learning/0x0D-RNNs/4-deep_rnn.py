@@ -26,3 +26,29 @@ def deep_rnn(rnn_cells, X, h_0):
     """
     Deep RNN
     """
+
+    h_prev = h_0
+    H = np.array(([h_prev]))
+    H = np.repeat(H, X.shape[0] + 1, axis=0)
+
+    for t in range(X.shape[0]):
+        for layer, cell in enumerate(rnn_cells):
+            if layer == 0:
+                # call function with h_t and X_t of current time
+                h_prev, y = cell.forward(H[t, layer], X[t])
+            else:
+                # call function with h_t and h_prev of current time
+                h_prev, y = cell.forward(H[t, layer], h_prev)
+
+            # update matrix of hidden states
+            H[t + 1, layer] = h_prev
+
+            # update matrix of outputs
+            if t == 0:
+                Y = np.array(([y]))
+                Y = np.repeat(Y, X.shape[0], axis=0)
+
+            else:
+                Y[t] = y
+
+    return H, Y
