@@ -51,7 +51,7 @@ def sparse(input_dims, hidden_layers, latent_dims, lambtha):
                            activity_regularizer=regularizer)(X_decoder)
 
     # create decoder's hidden layers
-    for iter in range(len(hidden_layers) - 2, 0, -1):
+    for iter in range(len(hidden_layers) - 2, -1, -1):
         input = K.layers.Dense(hidden_layers[iter], activation="relu")(input)
 
     output = K.layers.Dense(input_dims, activation="sigmoid")(input)
