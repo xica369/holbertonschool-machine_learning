@@ -25,31 +25,51 @@ def sparse(input_dims, hidden_layers, latent_dims, lambtha):
     auto is the sparse autoencoder model
     """
 
-    input_encoder = K.Input(shape=(input_dims, ))
+    # ========= ENCODER =========
 
-    output = K.layers.Dense(hidden_layers[0], activation='relu')(input_encoder)
-    for i in range(1, len(hidden_layers)):
-        output = K.layers.Dense(hidden_layers[i], activation='relu')(output)
-    reg = K.regularizers.l1(lambtha)
-    out_encoder = K.layers.Dense(latent_dims,
-                                 activation='relu',
-                                 activity_regularizer=reg)(output)
+    # create a placeholder to encoder
+    X_encoder = K.Input(shape=(input_dims, ))
+    input = X_encoder
 
-    input_decoder = K.Input(shape=(latent_dims, ))
-    output2 = K.layers.Dense(hidden_layers[-1],
-                             activation='relu')(input_decoder)
-    for i in range(len(hidden_layers)-2, -1, -1):
-        output2 = K.layers.Dense(hidden_layers[i], activation='relu')(output2)
-    out_decoder = K.layers.Dense(input_dims, activation='sigmoid',)(output2)
+    # create encoder's hidden layers
+    for hidden_layer in hidden_layers:
+        input = K.layers.Dense(hidden_layer, activation="relu")(input)
 
-    encoder = K.models.Model(inputs=input_encoder, outputs=out_encoder)
-    decoder = K.models.Model(inputs=input_decoder, outputs=out_decoder)
+    # latent space representation
+    regularizer = K.regularizers.l1(lambtha)
+    h = K.layers.Dense(latent_dims, activation="relu",
+                       activity_regularizer=regularizer)(input)
 
-    input_auto = K.Input(shape=(input_dims, ))
-    encoderOut = encoder(input_auto)
-    decoderOut = decoder(encoderOut)
-    auto = K.models.Model(inputs=input_auto, outputs=decoderOut)
-    auto.compile(optimizer='Adam',
-                 loss='binary_crossentropy')
+    # create the encoder model
+    encoder = K.models.Model(inputs=X_encoder, outputs=h)
+
+    # ========= DECODER =========
+
+    # create a placeholder to decoder
+    X_decoder = K.Input(shape=(latent_dims, ))
+    input = K.layers.Dense(hidden_layers[-1], activation="relu",
+                           activity_regularizer=regularizer)(X_decoder)
+
+    # create decoder's hidden layers
+    for iter in range(len(hidden_layers) - 2, 0, -1):
+        input = K.layers.Dense(hidden_layers[iter], activation="relu")(input)
+
+    output = K.layers.Dense(input_dims, activation="sigmoid")(input)
+
+    # create the decoder model
+    decoder = K.models.Model(inputs=X_decoder, outputs=output)
+
+    # ========= AUTOENCODER =========
+
+    # create a placeholder to autoencoder
+    X_auto = K.Input(shape=(input_dims, ))
+
+    # get outputs of decoder to build the autoencoder model
+    h = encoder(X_auto)
+    Y = decoder(h)
+
+    # create the autoencoder model and compile
+    auto = K.models.Model(inputs=X_auto, outputs=Y)
+    auto.compile(optimizer="Adam", loss="binary_crossentropy")
 
     return encoder, decoder, auto
