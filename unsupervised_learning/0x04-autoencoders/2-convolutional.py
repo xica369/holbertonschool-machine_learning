@@ -28,19 +28,17 @@ def autoencoder(input_dims, filters, latent_dims):
     # ========= ENCODER =========
 
     # create a placeholder to encoder
-    X_encoder = K.Input(shape=input_dims)
-    x = X_encoder
+    X_encoder = x = K.Input(shape=input_dims)
 
-    # create encoder's hidden layers
-    for filter in filters:
+    # encoder will consist in a stack of Conv2D and MaxPooling2D layers
+    for filter in (filters):
         x = K.layers.Conv2D(filters=filter,
-                                kernel_size=(3, 3),
-                                padding="same",
-                                kernel_initializer=he_normal,
-                                activation="relu")(x)
+                            kernel_size=3,
+                            padding="same",
+                            kernel_initializer=he_normal,
+                            activation="relu")(x)
 
-        x = K.layers.MaxPool2D(pool_size=(2, 2),
-                                   padding="same")(x)
+        x = K.layers.MaxPool2D(pool_size=(2, 2), padding="same")(x)
 
     # create the encoder model
     encoder = K.models.Model(inputs=X_encoder, outputs=x)
@@ -48,33 +46,31 @@ def autoencoder(input_dims, filters, latent_dims):
     # ========= DECODER =========
 
     # create a placeholder to decoder
-    X_decoder = K.Input(shape=latent_dims)
-    x = X_decoder
+    X_decoder = x = K.Input(shape=latent_dims)
 
-    # create decoder's hidden layers
-    for filter in range(len(filters) - 3, -1, -1):
-        x = K.layers.Conv2D(filters=filter,
-                            kernel_size=(3, 3),
+    # decoder will consist in a stack of Conv2D and UpSampling2D layers
+    for iter in range(len(filters)-1, 0, -1):
+        x = K.layers.Conv2D(filters=filters[iter],
+                            kernel_size=3,
                             padding="same",
                             kernel_initializer=he_normal,
                             activation="relu")(x)
 
-        x = K.layers.UpSampling2D()(x)
+        x = K.layers.UpSampling2D(2)(x)
 
-    x = K.layers.Conv2D(filters=filters[1],
-                        kernel_size=(3, 3),
+    x = K.layers.Conv2D(filters=filters[0],
+                        kernel_size=3,
                         padding="valid",
                         kernel_initializer=he_normal,
                         activation="relu")(x)
 
-    x = K.layers.MaxPool2D(pool_size=(2, 2),
-                           padding="same")(x)
+    x = K.layers.UpSampling2D()(x)
 
-    output = K.layers.Conv2D(filters=filters[0],
-                        kernel_size=(3, 3),
-                        padding="same",
-                        kernel_initializer=he_normal,
-                        activation="sigmoid")(x)
+    output = K.layers.Conv2D(filters=input_dims[2],
+                             kernel_size=3,
+                             padding="same",
+                             kernel_initializer=he_normal,
+                             activation="sigmoid")(x)
 
     # create the decoder model
     decoder = K.models.Model(inputs=X_decoder, outputs=output)
