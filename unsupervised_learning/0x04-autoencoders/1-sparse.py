@@ -35,7 +35,7 @@ def sparse(input_dims, hidden_layers, latent_dims, lambtha):
     for hidden_layer in hidden_layers:
         input = K.layers.Dense(hidden_layer, activation="relu")(input)
 
-    # latent space representation
+    # latent space representation with l1 regularization
     regularizer = K.regularizers.l1(lambtha)
     h = K.layers.Dense(latent_dims, activation="relu",
                        activity_regularizer=regularizer)(input)
