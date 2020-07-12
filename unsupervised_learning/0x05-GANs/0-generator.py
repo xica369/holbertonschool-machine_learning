@@ -26,5 +26,4 @@ def generator(Z):
                                   activation="sigmoid",
                                   name="layer_2")(layer_1)
 
-
     return layer_2
