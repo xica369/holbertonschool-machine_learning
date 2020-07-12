@@ -11,7 +11,6 @@ Returns: loss, train_op
   train_op is the training operation for the discriminator
 """
 
-import numpy as np
 import tensorflow as tf
 generator = __import__('0-generator').generator
 discriminator = __import__('1-discriminator').discriminator
