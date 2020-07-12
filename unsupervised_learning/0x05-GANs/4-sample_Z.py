@@ -10,10 +10,11 @@ Returns: Z, a numpy.ndarray of shape (m, n) containing the uniform samples
 """
 
 import numpy as np
-import tensorflow as tf
 
 
 def sample_Z(m, n):
     """
     Function that creates input for the generator
     """
+
+    return np.random.uniform(-1., 1., size=(m, n))
