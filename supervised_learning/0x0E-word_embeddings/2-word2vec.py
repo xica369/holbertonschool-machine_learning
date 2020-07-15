@@ -19,8 +19,9 @@ def word2vec_model(sentences, size=100, min_count=5, window=5, negative=5,
     - window is the maximum distance between the current and predicted word
     within a sentence
     - negative is the size of negative sampling
-    - cbow is a boolean to determine the training type; True is for CBOW;
-    False is for Skip-gram
+    - cbow is a boolean to determine the training type;
+        True is for CBOW;
+        False is for Skip-gram
     - iterations is the number of iterations to train over
     - seed is the seed for the random number generator
 
