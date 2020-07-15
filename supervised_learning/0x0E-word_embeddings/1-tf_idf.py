@@ -4,6 +4,8 @@
 TF-IDF
 """
 
+from sklearn.feature_extraction.text import TfidfVectorizer
+
 
 def tf_idf(sentences, vocab=None):
     """
@@ -20,3 +22,10 @@ def tf_idf(sentences, vocab=None):
         f is the number of features analyzed
     - features is a list of the features used for embeddings
     """
+
+    vectorizer = TfidfVectorizer(vocabulary=vocab)
+    X = vectorizer.fit_transform(sentences)
+    E = X.toarray()
+    F = vectorizer.get_feature_names()
+
+    return E, F
