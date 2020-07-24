@@ -22,8 +22,8 @@ mpl.rcParams['axes.grid'] = False
 csv_path = "./preprocess.csv"
 df = pd.read_csv(csv_path)
 
-# the first 3.000.000 rows of the data will be the training dataset
-TRAIN_SPLIT = 3000000
+# the first 300.000 rows of the data will be the training dataset
+TRAIN_SPLIT = 100000
 
 # Setting seed to ensure reproducibility.
 tf.random.set_random_seed(1)
@@ -37,6 +37,8 @@ data_mean = dataset[:TRAIN_SPLIT].mean(axis=0)
 data_std = dataset[:TRAIN_SPLIT].std(axis=0)
 
 dataset = (dataset-data_mean)/data_std
+
+print(len(dataset))
 
 def multivariate_data(dataset, target, start_index, end_index, history_size,
                       target_size, step, single_step=False):
@@ -58,7 +60,10 @@ def multivariate_data(dataset, target, start_index, end_index, history_size,
 
         return np.array(data), np.array(labels)
 
+# size of the past window of information
 past_history = 60 * 24
+
+# future_target is how far in the future does the model need to learn to predict
 future_target = 60
 STEP = 60
 
@@ -118,6 +123,9 @@ def plot_train_history(history, title):
 
 plot_train_history(single_step_history,
                    'Single Step Training and validation loss')
+
+def create_time_steps(length):
+    return list(range(-length, 0))
 
 def show_plot(plot_data, delta, title):
     labels = ['History', 'True Future', 'Model Prediction']
