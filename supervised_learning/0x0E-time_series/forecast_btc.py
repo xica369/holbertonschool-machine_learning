@@ -90,6 +90,9 @@ single_step_model.add(tf.keras.layers.Dense(1))
 
 single_step_model.compile(optimizer=tf.train.AdamOptimizer(), loss='mse')
 
+for x, y in val_data_single.take(1):
+    print(single_step_model.predict(x).shape)
+
 EVALUATION_INTERVAL = 200
 EPOCHS = 10
 
@@ -115,3 +118,30 @@ def plot_train_history(history, title):
 
 plot_train_history(single_step_history,
                    'Single Step Training and validation loss')
+
+def show_plot(plot_data, delta, title):
+    labels = ['History', 'True Future', 'Model Prediction']
+    marker = ['.-', 'rx', 'go']
+    time_steps = create_time_steps(plot_data[0].shape[0])
+    if delta:
+        future = delta
+    else:
+        future = 0
+
+    plt.title(title)
+    for i, x in enumerate(plot_data):
+        if i:
+            plt.plot(future, plot_data[i], marker[i], markersize=10,
+                     label=labels[i])
+        else:
+            plt.plot(time_steps, plot_data[i].flatten(), marker[i], label=labels[i])
+    plt.legend()
+    plt.xlim([time_steps[0], (future+5)*2])
+    plt.xlabel('Time-Step')
+    return plt
+
+for x, y in val_data_single.take(3):
+    plot = show_plot([x[0][:, 1].numpy(), y[0].numpy(),
+                      single_step_model.predict(x)[0]], 12,
+                     'Single Step Prediction')
+    plot.show()
