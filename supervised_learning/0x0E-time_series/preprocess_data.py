@@ -13,8 +13,7 @@ df = pd.read_csv(csv_path)
 # update the column names
 df.rename(columns={'Volume_(BTC)': 'Volume_BTC',
                    'Volume_(Currency)': 'Volume_USD',
-                   'Timestamp': 'Date_time'},
-          inplace=True)
+                   'Timestamp': 'Date_time'}, inplace=True)
 
 # change to date time format
 df['Date_time'] = pd.to_datetime(df['Date_time'], unit='s')
@@ -27,6 +26,6 @@ df = df.set_index('Date_time')
 # remove the columns: Opne, High, Low and Close
 df.drop(["Open", "High", "Low", "Close"], axis=1, inplace=True)
 
-path_save = "./preprocess.csv"
 # saves the changes in new file
+path_save = "./preprocess.csv"
 df.to_csv(path_save)
