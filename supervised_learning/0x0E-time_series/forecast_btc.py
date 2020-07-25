@@ -9,7 +9,6 @@ import tensorflow as tf
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
-import os
 import pandas as pd
 import tensorflow.contrib.eager as tfe
 
@@ -22,8 +21,8 @@ mpl.rcParams['axes.grid'] = False
 csv_path = "./preprocess.csv"
 df = pd.read_csv(csv_path)
 
-# the first 300.000 rows of the data will be the training dataset
-TRAIN_SPLIT = 100000
+# the first 2.240.000 rows of the data will be the training dataset
+TRAIN_SPLIT = 2240000
 
 # Setting seed to ensure reproducibility.
 tf.random.set_random_seed(1)
@@ -38,6 +37,7 @@ data_std = dataset[:TRAIN_SPLIT].std(axis=0)
 
 dataset = (dataset-data_mean)/data_std
 
+print("*****************************************")
 print(len(dataset))
 
 def multivariate_data(dataset, target, start_index, end_index, history_size,
@@ -61,10 +61,10 @@ def multivariate_data(dataset, target, start_index, end_index, history_size,
         return np.array(data), np.array(labels)
 
 # size of the past window of information
-past_history = 60 * 24
+past_history = 1440
 
 # future_target is how far in the future does the model need to learn to predict
-future_target = 60
+future_target = 1
 STEP = 60
 
 x_train_single, y_train_single = multivariate_data(dataset, dataset[:, 1], 0,
@@ -77,6 +77,12 @@ x_val_single, y_val_single = multivariate_data(dataset, dataset[:, 1],
                                                future_target, STEP,
                                                single_step=True)
 
+print("-------------------------")
+print(x_train_single.shape)
+print(y_train_single.shape)
+print(x_val_single.shape)
+print(y_val_single.shape)
+print("----------------------------")
 print('Single window of past history : {}'.format(x_train_single[0].shape))
 
 BATCH_SIZE = 256
@@ -95,11 +101,11 @@ single_step_model.add(tf.keras.layers.Dense(1))
 
 single_step_model.compile(optimizer=tf.train.AdamOptimizer(), loss='mse')
 
-for x, y in val_data_single.take(1):
+for x, y in val_data_single.take(3):
     print(single_step_model.predict(x).shape)
 
 EVALUATION_INTERVAL = 200
-EPOCHS = 10
+EPOCHS = 5
 
 single_step_history = single_step_model.fit(train_data_single, epochs=EPOCHS,
                                             steps_per_epoch=EVALUATION_INTERVAL,
