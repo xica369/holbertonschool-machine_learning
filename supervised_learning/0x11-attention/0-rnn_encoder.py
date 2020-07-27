@@ -7,7 +7,7 @@ RNN Encoder
 import tensorflow as tf
 
 
-class RNNEncoder(tensorflow.keras.layers.Layer):
+class RNNEncoder(f.keras.layers.Layer):
     """
     class RNNEncoder
     that inherits from tensorflow.keras.layers.Layer to encode for
@@ -35,6 +35,16 @@ class RNNEncoder(tensorflow.keras.layers.Layer):
         state
         """
 
+        super(RNNEncoder, self).__init__()
+        self.batch = batch
+        self.units = units
+        self.embedding = tf.keras.layers.Embedding(input_dim=vocab,
+                                                   output_dim=embedding)
+
+        self.gru = tf.keras.layers.GRU(self.units,
+                                       recurrent_initializer="glorot_uniform",
+                                       return_sequences=True,
+                                       return_state=True)
 
     def initialize_hidden_state(self):
         """
@@ -45,6 +55,9 @@ class RNNEncoder(tensorflow.keras.layers.Layer):
         hidden states
         """
 
+        tensor = tf.keras.initializers.Zeros(shape=(self.batch, self.units))
+
+        return tensor
 
     def call(self, x, initial):
         """
@@ -59,3 +72,10 @@ class RNNEncoder(tensorflow.keras.layers.Layer):
         the outputs of the encoder
         - hidden is a tensor of shape (batch, units) containing the last hidden
         state of the encoder
+        """
+
+        embedding = self.embedding(x)
+        outputs, hidden_states = self.gru(inputs=embedding,
+                                          initial_state=initial)
+
+        return outputs, hidden_states
