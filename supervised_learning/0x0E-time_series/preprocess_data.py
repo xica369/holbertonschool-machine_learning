@@ -18,7 +18,7 @@ df.rename(columns={'Volume_(BTC)': 'Volume_BTC',
 # change to date time format
 df['Date_time'] = pd.to_datetime(df['Date_time'], unit='s')
 
-# change to date time format
+# complete NaN data
 df = df.interpolate()
 
 df = df.set_index('Date_time')
