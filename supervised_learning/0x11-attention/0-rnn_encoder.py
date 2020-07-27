@@ -7,7 +7,7 @@ RNN Encoder
 import tensorflow as tf
 
 
-class RNNEncoder(f.keras.layers.Layer):
+class RNNEncoder(tf.keras.layers.Layer):
     """
     class RNNEncoder
     that inherits from tensorflow.keras.layers.Layer to encode for
@@ -55,7 +55,7 @@ class RNNEncoder(f.keras.layers.Layer):
         hidden states
         """
 
-        tensor = tf.keras.initializers.Zeros(shape=(self.batch, self.units))
+        tensor = tf.zeros(shape=(self.batch, self.units))
 
         return tensor
 
