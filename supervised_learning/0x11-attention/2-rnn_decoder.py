@@ -29,8 +29,18 @@ class RNNDecoder(tf.keras.layers.Layer):
         - embedding: a keras Embedding layer that converts words from the
         vocabulary into an embedding vector
         - gru: a keras GRU layer with units units
+        - F: a Dense layer with vocab units
 
         """
+
+        super(RNNDecoder, self).__init__()
+
+        self.F = tf.keras.layers.Dense(vocab)
+        self.embedding = tf.keras.layers.Embedding(vocab, embedding)
+        self.gru = tf.keras.layers.GRU(units,
+                                       return_sequences=True,
+                                       return_state=True,
+                                       recurrent_initializer='glorot_uniform')
 
     def call(self, x, s_prev, hidden_states):
         """
@@ -48,3 +58,23 @@ class RNNDecoder(tf.keras.layers.Layer):
         - s is a tensor of shape (batch, units) containing the new decoder
           hidden state
         """
+
+        attention = SelfAttention(s_prev.shape[1])
+        context, weights = attention(s_prev, hidden_states)
+
+        # x shape after passing through embedding: (batch_size,1,embedding_dim)
+        x = self.embedding(x)
+
+        # x shape after concatenation: (batch_size,1,embedding_dim+hidden_size)
+        x = tf.concat([tf.expand_dims(context, 1), x], axis=-1)
+
+        # passing the concatenated vector to the GRU
+        y, s = self.gru(x)
+
+        # y shape: (batch_size * 1, hidden_size)
+        y = tf.reshape(y, (-1, y.shape[2]))
+
+        # y shape: (batch_size, vocab)
+        y = self.F(y)
+
+        return y, s
