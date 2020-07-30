@@ -37,10 +37,10 @@ class EncoderBlock(tf.keras.layers.Layer):
         self.mha = MultiHeadAttention(dm, h)
         self.dense_hidden = tf.keras.layers.Dense(hidden, activation="relu")
         self.dense_output = tf.keras.layers.Dense(dm)
-        self.layernorm1 = tf.keras.layers.LayerNormalization(epsilon=1e-6)
-        self.layernorm2 = tf.keras.layers.LayerNormalization(epsilon=1e-6)
-        self.dropout1 = tf.keras.layers.Dropout(rate)
-        self.dropout2 = tf.keras.layers.Dropout(rate)
+        self.layernorm1 = tf.keras.layers.BatchNormalization(epsilon=1e-6)
+        self.layernorm2 = tf.keras.layers.BatchNormalization(epsilon=1e-6)
+        self.dropout1 = tf.keras.layers.Dropout(drop_rate)
+        self.dropout2 = tf.keras.layers.Dropout(drop_rate)
 
     def call(self, x, training, mask=None):
         """
@@ -53,13 +53,20 @@ class EncoderBlock(tf.keras.layers.Layer):
         block’s output
         """
 
-        attn_output, _ = self.mha(x, x, x, mask)  # (batch_size, input_seq_len, d_model)
+        # (batch_size, input_seq_len, d_model)
+        attn_output, _ = self.mha(x, x, x, mask)
         attn_output = self.dropout1(attn_output, training=training)
-        out1 = self.layernorm1(x + attn_output)  # (batch_size, input_seq_len, d_model)
+
+        # (batch_size, input_seq_len, d_model)
+        out1 = self.layernorm1(x + attn_output)
 
         output = self.dense_hidden(out1)
-        output = self.dense_output(output)  # (batch_size, input_seq_len, d_model)
+
+        # (batch_size, input_seq_len, d_model)
+        output = self.dense_output(output)
         output = self.dropout2(output, training=training)
-        out2 = self.layernorm2(out1 + output)  # (batch_size, input_seq_len, d_model)
+
+        # (batch_size, input_seq_len, d_model)
+        out2 = self.layernorm2(out1 + output)
 
         return out2
