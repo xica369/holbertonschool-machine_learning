@@ -36,6 +36,16 @@ class Transformer(tf.keras.Model):
         - linear: a final Dense layer with target_vocab units
         """
 
+        super(Transformer, self).__init__()
+
+        self.encoder = Encoder(N, dm, h, hidden, input_vocab,
+                               max_seq_input, drop_rate)
+
+        self.decoder = Decoder(N, dm, h, hidden, target_vocab,
+                               max_seq_target, drop_rate)
+
+        self.linear = tf.keras.layers.Dense(target_vocab)
+
     def call(self, inputs, target, training, encoder_mask, look_ahead_mask,
              decoder_mask):
         """
@@ -52,3 +62,14 @@ class Transformer(tf.keras.Model):
         a tensor of shape (batch, target_seq_len, target_vocab)
         containing the transformer output
         """
+
+        # encoder_output.shape = (batch_size, inp_seq_len, d_model)
+        encoder_output = self.encoder(inputs, training, encoder_mask)
+
+        # decoder_output.shape = (batch_size, tar_seq_len, d_model)
+        decoder_output = self.decoder(target, encoder_output, training,
+                                      look_ahead_mask, decoder_mask)
+
+        output = self.linear(decoder_output)
+
+        return output
