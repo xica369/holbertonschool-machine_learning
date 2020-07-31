@@ -42,9 +42,14 @@ class DecoderBlock(tf.keras.layers.Layer):
         self.mha2 = MultiHeadAttention(dm, h)
         self.dense_hidden = tf.keras.layers.Dense(hidden, activation='relu')
         self.dense_output = tf.keras.layers.Dense(dm)
-        self.layernorm1 = tf.keras.layers.BatchNormalization(epsilon=1e-6)
-        self.layernorm2 = tf.keras.layers.BatchNormalization(epsilon=1e-6)
-        self.layernorm3 = tf.keras.layers.BatchNormalization(epsilon=1e-6)
+
+        # self.layernorm1 = tf.keras.layers.BatchNormalization(epsilon=1e-6)
+        # self.layernorm2 = tf.keras.layers.BatchNormalization(epsilon=1e-6)
+        # self.layernorm3 = tf.keras.layers.BatchNormalization(epsilon=1e-6)
+        self.layernorm1 = tf.keras.layers.LayerNormalization(epsilon=1e-6)
+        self.layernorm2 = tf.keras.layers.LayerNormalization(epsilon=1e-6)
+        self.layernorm3 = tf.keras.layers.LayerNormalization(epsilon=1e-6)
+
         self.dropout1 = tf.keras.layers.Dropout(drop_rate)
         self.dropout2 = tf.keras.layers.Dropout(drop_rate)
         self.dropout3 = tf.keras.layers.Dropout(drop_rate)
@@ -66,17 +71,22 @@ class DecoderBlock(tf.keras.layers.Layer):
         the block’s output
         """
 
-        attn1, attn_weights_block1 = self.mha1(x, x, x, look_ahead_mask)  # (batch_size, target_seq_len, d_model)
+        # (batch_size, target_seq_len, d_model)
+        attn1, attn_weights_block1 = self.mha1(x, x, x, look_ahead_mask)
         attn1 = self.dropout1(attn1, training=training)
         out1 = self.layernorm1(attn1 + x)
 
+        # (batch_size, target_seq_len, d_model)
         attn2, attn_weights_block2 = self.mha2(
-            out1, encoder_output, encoder_output, padding_mask)  # (batch_size, target_seq_len, d_model)
+            out1, encoder_output, encoder_output, padding_mask)
         attn2 = self.dropout2(attn2, training=training)
-        out2 = self.layernorm2(attn2 + out1)  # (batch_size, target_seq_len, d_model)
 
-        ffn_output = self.ffn(out2)  # (batch_size, target_seq_len, d_model)
-        ffn_output = self.dropout3(ffn_output, training=training)
-        out3 = self.layernorm3(ffn_output + out2)  # (batch_size, target_seq_len, d_model)
+        # (batch_size, target_seq_len, d_model)
+        out2 = self.layernorm2(attn2 + out1)
+
+        output = self.dense_hidden(out2)
+        output = self.dense_output(output)
+        output = self.dropout3(output, training=training)
+        out3 = self.layernorm3(output + out2)
 
         return out3
