@@ -37,3 +37,43 @@ class Encoder(tf.keras.layers.Layer):
         - blocks: a list of length N containing all of the EncoderBlock‘s
         - dropout: the dropout layer, to be applied to the positional encodings
         """
+
+        super(Encoder, self).__init__()
+        self.N = N
+        self.dm = dm
+        self.embedding = tf.keras.layers.Embedding(input_vocab, self.dm)
+        self.positional_encoding = positional_encoding(max_seq_len, self.dm)
+        self.dropout = tf.keras.layers.Dropout(drop_rate)
+        self.blocks = []
+
+        for iter in range(N):
+            encoder_block = EncoderBlock(self.dm, h, hidden, drop_rate)
+            self.blocks.append(encoder_block)
+
+    def call(self, x, training, mask):
+        """
+        Public instance method
+        - x: a tensor of shape (batch, input_seq_len, dm)
+             containing the input to the encoder
+        - training: a boolean to determine if the model is training
+        - mask: the mask to be applied for multi head attention
+
+        Returns:
+        a tensor of shape (batch, input_seq_len, dm)
+        containing the encoder output
+        """
+
+        seq_len = x.shape[1]
+
+        # adding embedding and position encoding
+        # (batch_size, input_seq_len, d_model)
+        x = self.embedding(x)
+        x *= tf.math.sqrt(tf.cast(self.dm, tf.float32))
+        x += self.positional_encoding[:seq_len]
+
+        X = self.dropout(x, training=training)
+
+        for block in self.blocks:
+            X = block(X, training, mask)
+
+        return X
