@@ -46,7 +46,7 @@ class Encoder(tf.keras.layers.Layer):
         self.dropout = tf.keras.layers.Dropout(drop_rate)
         self.blocks = []
 
-        for iter in range(N):
+        for iter in range(self.N):
             encoder_block = EncoderBlock(self.dm, h, hidden, drop_rate)
             self.blocks.append(encoder_block)
 
