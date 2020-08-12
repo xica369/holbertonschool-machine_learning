@@ -4,7 +4,7 @@
 Load the Environment
 """
 
-from gym.envs.toy_text.frozen_lake import FrozenLakeEnv
+import gym
 
 
 def load_frozen_lake(desc=None, map_name=None, is_slippery=False):
@@ -23,11 +23,11 @@ def load_frozen_lake(desc=None, map_name=None, is_slippery=False):
     Returns: the environment
     """
 
-    if desc is None and map_name is None:
-        map_name = "8x8"
+    env = gym.make("FrozenLake8x8-v0",
+                   desc=desc,
+                   map_name=map_name,
+                   is_slippery=is_slippery)
 
-    env = FrozenLakeEnv(desc=desc,
-                        map_name=map_name,
-                        is_slippery=is_slippery)
+    env.reset()
 
     return env
