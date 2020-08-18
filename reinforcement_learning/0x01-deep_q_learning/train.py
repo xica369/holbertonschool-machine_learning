@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 """
-Functions to train an agent that can play Atari’s Breakout
+Script to train an agent that can play Atari’s Breakout
+and saves the final policy network as policy.h5
 """
 
 import gym
@@ -18,9 +19,14 @@ from rl.memory import SequentialMemory
 
 
 class InputProcessor(Processor):
-    def process_observation(self, observation):
+    """
+    Class that performs the image processing for the network input
+    """
 
-         # (height, width, channel)
+    def process_observation(self, observation):
+        """ process observation"""
+
+        # (height, width, channel)
         assert observation.ndim == 3
         img = Image.fromarray(observation)
 
@@ -34,17 +40,16 @@ class InputProcessor(Processor):
 
     def process_state_batch(self, batch):
         """
-        We could perform this processing step in `process_observation`.
-        In this case, however,
-        we would need to store a `float32` array instead, which is 4x more
-        memory intensive than
-        an `uint8` array. This matters if we store 1M observations.
+        process state batch
         """
         processed_batch = batch.astype('float32') / 255.
         return processed_batch
 
 
 def build_model(state_size, num_actions):
+    """
+    build policy network
+    """
     input_shape = (4,) + state_size
     model = Sequential()
     model.add(Permute((2, 3, 1), input_shape=input_shape))
@@ -59,11 +64,14 @@ def build_model(state_size, num_actions):
     model.add(Activation('relu'))
     model.add(Dense(num_actions))
     model.add(Activation('linear'))
-    print(model.summary())
+
     return model
 
 
 def build_callbacks(env_name):
+    """
+    build callbacks
+    """
     checkpoint_weights_filename = 'dqn_' + env_name + '_weights_{step}.h5f'
     log_filename = 'dqn_{}_log.json'.format(env_name)
     callbacks = [ModelIntervalCheckpoint(checkpoint_weights_filename,
@@ -77,18 +85,27 @@ if __name__ == '__main__':
     ENV_NAME = 'BreakoutDeterministic-v4'
     INPUT_SHAPE = (84, 84)
     WINDOW_LENGTH = 4
+
     # Get the environment and extract the number of actions.
     env = gym.make(ENV_NAME)
-    np.random.seed(42)
-    env.seed(42)
+
+    np.random.seed(3)
+    env.seed(3)
     num_actions = env.action_space.n
     input_shape = (WINDOW_LENGTH,) + INPUT_SHAPE
 
+    # build model
     model = build_model(INPUT_SHAPE, num_actions)
+
+    # where these experiences will be stored
     memory = SequentialMemory(limit=1000000, window_length=WINDOW_LENGTH)
+
     processor = InputProcessor()
+
+    # Implement the epsilon greedy policy
     policy = EpsGreedyQPolicy()
 
+    # Deep Q-Network and agent
     dqn = DQNAgent(model=model,
                    nb_actions=num_actions,
                    policy=policy,
@@ -102,15 +119,14 @@ if __name__ == '__main__':
 
     dqn.compile(Adam(lr=.00025), metrics=['mae'])
     callbacks = build_callbacks(ENV_NAME)
+
+    # training
     dqn.fit(env,
-            nb_steps=3,
+            nb_steps=2000000,
             log_interval=10000,
             visualize=False,
             verbose=2,
             callbacks=callbacks)
 
-    # After training is done, we save the final weights.
+    # save the final weights.
     dqn.save_weights("policy.h5", overwrite=True)
-
-    # Finally, evaluate our algorithm for 5 episodes.
-    dqn.test(env, nb_episodes=1, visualize=True)
