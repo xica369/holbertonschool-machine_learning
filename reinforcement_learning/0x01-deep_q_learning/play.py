@@ -21,18 +21,29 @@ if __name__ == '__main__':
     ENV_NAME = 'BreakoutDeterministic-v4'
     INPUT_SHAPE = (84, 84)
     WINDOW_LENGTH = 4
+
     # Get the environment and extract the number of actions.
     env = gym.make(ENV_NAME)
-    np.random.seed(42)
-    env.seed(42)
+
+    np.random.seed(3)
+    env.seed(3)
     num_actions = env.action_space.n
 
+    # build model
     model = build_model(INPUT_SHAPE, num_actions)
+
+    # load wights of policy.h5
     model.load_weights("policy.h5")
+
+    # where these experiences will be stored
     memory = SequentialMemory(limit=1000000, window_length=WINDOW_LENGTH)
+
     processor = InputProcessor()
+
+    # use greedy policy - returns the current best action according to q_values
     policy = GreedyQPolicy()
 
+    # Deep Q-Network and agent
     dqn = DQNAgent(model=model,
                    nb_actions=num_actions,
                    policy=policy,
@@ -46,5 +57,5 @@ if __name__ == '__main__':
 
     dqn.compile(Adam(lr=.00025), metrics=['mae'])
 
-    # Finally, evaluate our algorithm for 6 episodes.
+    # Evaluate the algorithm for 6 episodes.
     dqn.test(env, nb_episodes=6, visualize=True)
