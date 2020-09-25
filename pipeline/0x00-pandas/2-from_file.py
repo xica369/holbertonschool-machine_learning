@@ -17,6 +17,6 @@ def from_file(filename, delimiter):
     Returns: the loaded pd.DataFrame
     """
 
-    df = pd.read_csv(filename, sep=delimiter)
+    df = pd.read_csv(filename, delimiter=delimiter)
 
     return df
