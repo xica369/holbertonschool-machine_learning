@@ -15,6 +15,7 @@ minutes from now and the value of X-Ratelimit-Reset
 
 import requests
 import sys
+import time
 
 if __name__ == '__main__':
 
@@ -29,8 +30,9 @@ if __name__ == '__main__':
             print(resp["location"])
 
         elif response.status_code == 403:
-            time = int(int(response.headers["X-Ratelimit-Reset"]) / 100000000)
-            print("Reset in {} min".format(time))
+            t = int(response.headers["X-Ratelimit-Reset"])
+            t = int((t - int(time.time())) / 60)
+            print("Reset in {} min".format(t))
 
         else:
             print("Not found")
