@@ -45,8 +45,5 @@ if __name__ == "__main__":
     launchpad_name = resp_launchpad["name"]
     launchpad_loc = resp_launchpad["locality"]
 
-    # print("{} ({}) {} - {} ({})".format(name, date_local, rocket_name,
-    #                                    launchpad_name, launchpad_loc))
-
-    print(name + " (" + date_local + ") " + rocket_name + " - " +
-          launchpad_name + " (" + launchpad_loc + ")")
+    print("{} ({}) {} - {} ({})".format(name, date_local, rocket_name,
+                                        launchpad_name, launchpad_loc))
