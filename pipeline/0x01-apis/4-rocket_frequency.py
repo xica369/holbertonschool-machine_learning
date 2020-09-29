@@ -14,6 +14,6 @@ If multiple rockets have the same amount of launches,
 order them by alphabetic order (A to Z)
 """
 
-import request
+import requests
 
 if __name__ == "__main__":
