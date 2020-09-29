@@ -19,6 +19,12 @@ df["Volume_(Currency)"].fillna(0, inplace=True)
 df["Volume_(BTC)"].fillna(0, inplace=True)
 df = df[(df.index > '2017-01-01')]
 
-df = df.resample('D').mean()
+df = df.resample('D').agg({"Open": "first",
+                           "High": "max",
+                           "Low": "min",
+                           "Close": "last",
+                           "Volume_(BTC)": "sum",
+                           "Volume_(Currency)": "sum"})
+
 df.plot()
 plt.show()
