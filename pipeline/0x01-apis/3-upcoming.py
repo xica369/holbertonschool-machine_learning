@@ -16,7 +16,7 @@ Format:
 import requests
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
 
     url = "https://api.spacexdata.com/v4/launches/upcoming"
     response = requests.get(url).json()
@@ -24,8 +24,9 @@ if __name__ == "__main__":
     for num, launch in enumerate(response):
         if num == 0:
             date = launch["date_unix"]
+            idx = num
 
-        if launch["date_unix"] <= date:
+        if launch["date_unix"] < date:
             date = launch["date_unix"]
             idx = num
 
@@ -41,7 +42,7 @@ if __name__ == "__main__":
 
     name = upcoming["name"]
     date_local = upcoming["date_local"]
-    rocket_name = resp_rocket["name"]
+    rocket_name = requests.get(url_rocket).json()["name"]
     launchpad_name = resp_launchpad["name"]
     launchpad_loc = resp_launchpad["locality"]
 
