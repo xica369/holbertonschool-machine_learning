@@ -16,4 +16,25 @@ def availableShips(passengerCount):
     If no ship available, return an empty list
     """
 
-    response = requests.get("https://swapi-api.hbtn.io/api/starships/")
+    url = "https://swapi-api.hbtn.io/api/starships"
+    ships_available = []
+
+    while url:
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            resp = response.json()
+            results = resp["results"]
+
+            for result in results:
+                passengers = result["passengers"]
+
+                if passengers != "n/a" and passengers != "unknown":
+                    if int(passengers.replace(",", "")) >= passengerCount:
+                        ships_available. append(result["name"])
+
+            url = resp["next"]
+        else:
+            url = None
+
+    return ships_available
